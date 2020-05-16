@@ -1,42 +1,69 @@
-version: "2"
+version: "3.8"
 services:
     www:
+        container_name: php_apache
         build: .
         ports:
-            - "1234:80"
+            - "80:80"
         volumes:
-            - ./www:/var/www/html/
+            - ./www:/var/www/html/websec
         links:
-            - db
+            - db_1
+            - db_2
         networks:
             - default
         depends_on:
-            - db
-    db:
+            - db_1
+            - db_2
+
+    db_1:
         image: mysql:5.7.30
-        container_name: my-sql
+        container_name: db_phplogin
         ports:
-            - "3308:3306"
+            - "3306:3306"
         environment:
             MYSQL_DATABASE: phplogin
             MYSQL_USER: phplogin
             MYSQL_PASSWORD: 6Zhn5Tgb
-            MYSQL_ROOT_PASSWORD: 6Zhn5Tgb
+            MYSQL_ROOT_PASSWORD: root
         volumes:
             - ./dump:/docker-entrypoint-initdb.d
-            - persistent:/var/lib/mysql
+            - persistent:/var/lib/mysql_phplogin
         networks:
             - default
         restart: always
-    phpmyadmin:
+
+    db_2:
+        image: mysql:5.7.30
+        container_name: db_websec
+        ports:
+            - "6033:3306"
+        environment:
+            MYSQL_DATABASE: websec
+            MYSQL_USER: websec
+            MYSQL_PASSWORD: S0s3zwo9z3hn
+            MYSQL_ROOT_PASSWORD: root
+        volumes:
+            - ./dump2:/docker-entrypoint-initdb.d
+            - persistent:/var/lib/mysql_websec
+        networks:
+            - default
+        restart: always
+
+    phpmyadmin_1:
+        container_name: phpmyadmin_phplogin
         image: phpmyadmin/phpmyadmin
         links:
-            - db:db
+            - db_1:db
         ports:
-            - 2345:80
-        environment:
-            MYSQL_USER: phplogin
-            MYSQL_PASSWORD: 6Zhn5Tgb
-            MYSQL_ROOT_PASSWORD: 6Zhn5Tgb
+            - 8080:80
+
+    phpmyadmin_2:
+        container_name: phpmyadmin_websec
+        image: phpmyadmin/phpmyadmin
+        links:
+            - db_2:db
+        ports:
+            - 8081:80
 volumes:
     persistent:
