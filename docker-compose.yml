@@ -1,0 +1,42 @@
+version: "2"
+services:
+    www:
+        build: .
+        ports:
+            - "1234:80"
+        volumes:
+            - ./www:/var/www/html/
+        links:
+            - db
+        networks:
+            - default
+        depends_on:
+            - db
+    db:
+        image: mysql:5.7.30
+        container_name: my-sql
+        ports:
+            - "3308:3306"
+        environment:
+            MYSQL_DATABASE: phplogin
+            MYSQL_USER: phplogin
+            MYSQL_PASSWORD: 6Zhn5Tgb
+            MYSQL_ROOT_PASSWORD: 6Zhn5Tgb
+        volumes:
+            - ./dump:/docker-entrypoint-initdb.d
+            - persistent:/var/lib/mysql
+        networks:
+            - default
+        restart: always
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        links:
+            - db:db
+        ports:
+            - 2345:80
+        environment:
+            MYSQL_USER: phplogin
+            MYSQL_PASSWORD: 6Zhn5Tgb
+            MYSQL_ROOT_PASSWORD: 6Zhn5Tgb
+volumes:
+    persistent:
