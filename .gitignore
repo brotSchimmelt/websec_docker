@@ -4,3 +4,4 @@ www/
 
 # add test files
 test_docker-compose.yml
+.DS_Store
