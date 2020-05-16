@@ -1,3 +1,6 @@
 
 # websec files are in a different repo
 www/
+
+# add test files
+test_docker-compose.yml
