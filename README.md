@@ -97,8 +97,28 @@ sudo systemctl enable docker
 
 ## Docker commands
 
+- **Docker and Docker-Compose version**
 ```
 $ docker version
 $ docker-compose -v
 ```
 
+- **Resources used by Docker container**
+```
+$ docker stats --all
+```
+
+- **Docker processes**
+```
+$ docker ps
+```
+
+- **Kill all running containers**
+```
+$ docker kill $(docker ps -q)
+```
+
+- **Stop all running containers and remove persistent data**
+```
+$ docker-compose down -v
+```
