@@ -1,8 +1,17 @@
 # Websec Docker Environment
 This repo contains the Docker environment for the [websec project](https://github.com/brotSchimmelt/websec).
 
+---
 
 ## Install Docker
+### macOS
+Download and install **Docker Desktop** from [Docker Hub](https://hub.docker.com/editions/community/docker-ce-desktop-mac/)
+
+### Windows 10 (works only with Pro)
+Download and install **Docker Desktop** from [Docker Hub](https://hub.docker.com/editions/community/docker-ce-desktop-windows/)
+
+*Hyper-V and Windows Container must be enabled.*
+
 ### Linux (Ubuntu)
 0. Remove older versions of Docker:
 ```
@@ -79,10 +88,14 @@ sudo systemctl enable docker
 
 [Original Source and Trouble shooting](https://docs.docker.com/engine/install/linux-postinstall/)
 
+---
+
+## Docker-Compose
 
 
+---
 
-## Check Docker Version
+## Docker commands
 
 ```
 $ docker version
