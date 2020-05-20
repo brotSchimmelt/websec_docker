@@ -1,12 +1,12 @@
 # Websec Docker Environment
-TODO: Add descriptive description to describe $this.
+**TODO**: Add descriptive description to describe $this.
 
  
 
 ## Install Docker on macOS
 Download and install **Docker Desktop** from [Docker Hub](https://hub.docker.com/editions/community/docker-ce-desktop-mac/)
 
-## Install Docker on Windows 10 (works only with Pro)
+## Install Docker on Windows 10 (Pro required)
 Download and install **Docker Desktop** from [Docker Hub](https://hub.docker.com/editions/community/docker-ce-desktop-windows/)
 
 *Hyper-V and Windows Container must be enabled.*
@@ -91,7 +91,7 @@ sudo systemctl enable docker
 
 ## Docker-Compose
 
-
+**TODO**: Add content
  
 
 ## Docker commands
