@@ -1,7 +1,7 @@
 # Websec Docker Environment
 TODO: Add descriptive description to describe $this.
 
----
+ 
 
 ## Install Docker on macOS
 Download and install **Docker Desktop** from [Docker Hub](https://hub.docker.com/editions/community/docker-ce-desktop-mac/)
@@ -87,12 +87,12 @@ sudo systemctl enable docker
 
 [Original Source and Trouble shooting](https://docs.docker.com/engine/install/linux-postinstall/)
 
----
+ 
 
 ## Docker-Compose
 
 
----
+ 
 
 ## Docker commands
 
