@@ -3,35 +3,81 @@ This repo contains the Docker environment for the [websec project](https://githu
 
 
 ## Install Docker
+### Linux (Ubuntu)
+0. Remove older versions of Docker:
+```
+$ sudo apt-get remove docker docker-engine docker.io containerd runc
+```
 
+1. Setup the Docker repository:
+```
+$ sudo apt-get update
+
+$ sudo apt-get install apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
+```
+
+2. Add the Docker GPG key:
+```
+$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+```
+**Check the fingerprint** [link](https://docs.docker.com/engine/install/ubuntu/)
+
+```
+$ sudo apt-key fingerprint <last 8 digits of the fingerprint>
+```
+
+3. Add the stable repository for the used Ubuntu version:
+```
+$ sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+```
+
+4. Install Docker Engine:
+```
+ $ sudo apt-get update
+ $ sudo apt-get install docker-ce docker-ce-cli containerd.io
+```
+
+5. Verify the Docker installation:
+```
+$ sudo docker run hello-world
+```
+
+[Original Source and Trouble shooting](https://docs.docker.com/engine/install/ubuntu/)
 
 ### Post Installation (Linux Only)
-1. Create a Docker group
+1. Create a Docker group:
 ```
 $ sudo groupadd docker
 ```
 
-2. Add the current user to the newly created group
+2. Add the current user to the newly created group:
 ```
 $ sudo usermod -aG docker $USER
 ```
 
-3. Apply the group changes (or log out and back in again)
+3. Apply the group changes (or log out and back in again):
 ```
 $ newgrp docker 
 ```
 
-4. Test the Docker installation
+4. Test the Docker installation without ```sudo```:
 ```
 $ docker run hello-world
 ```
 
-5. Configure Docker to start at boot
+5. Configure Docker to start at boot:
 ```
 sudo systemctl enable docker
 ```
 
-6. [Trouble shooting](https://docs.docker.com/engine/install/linux-postinstall/)
+[Original Source and Trouble shooting](https://docs.docker.com/engine/install/linux-postinstall/)
 
 
 
