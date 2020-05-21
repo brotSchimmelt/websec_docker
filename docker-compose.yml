@@ -6,7 +6,7 @@ services:
         ports:
             - "80:80"
         volumes:
-            - ./www:/var/www/html/websec
+            - ./www:/var/www/html
         links:
             - db_1
             - db_2
