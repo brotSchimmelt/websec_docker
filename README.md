@@ -121,3 +121,24 @@ $ docker kill $(docker ps -q)
 ```
 $ docker-compose down -v
 ```
+
+- **Delete all containers including it volumes**
+```
+$ docker rm -vf $(docker ps -a -q)
+```
+
+- **Delete all images**
+```
+$ docker rmi -f $(docker images -a -q)
+```
+
+- **Delete all images in powershell**
+```
+$ $images = docker images -a -q
+$ foreach ($image in $images) { docker image rm $image -f } 
+```
+
+- **Remove all unused containers, volumes, networks and images**
+```
+$ docker system prune -a -volumes
+```
