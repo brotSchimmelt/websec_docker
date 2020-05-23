@@ -8,3 +8,6 @@ test_docker-compose.yml
 
 # file system
 .DS_Store
+
+# credentials
+.env
