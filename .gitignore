@@ -2,8 +2,9 @@
 # websec files are in a different repo
 www/
 
-# add test files
+# add test and backup files
 test_docker-compose.yml
+*.backup
 
 # file system
 .DS_Store
