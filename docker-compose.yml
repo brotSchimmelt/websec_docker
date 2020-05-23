@@ -33,10 +33,10 @@ services:
             # You need to escape the variable if you want it to be expanded
             # inside the container, using a double-dollar sign.
             # source: https://github.com/docker/compose/issues/4670
-            MYSQL_DATABASE: "$${MYSQL_DATABASE_SHOP}"
-            MYSQL_USER: "$${MYSQL_USER_SHOP}"
-            MYSQL_PASSWORD: "$${MYSQL_PASSWORD_SHOP}"
-            MYSQL_ROOT_PASSWORD: "$${MYSQL_ROOT_PASSWORD_SHOP}"
+            MYSQL_DATABASE: ${MYSQL_DATABASE_SHOP}
+            MYSQL_USER: ${MYSQL_USER_SHOP}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD_SHOP}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_SHOP}
         volumes:
             # - ./dump:/docker-entrypoint-initdb.d
             - persistent:/var/lib/mysql_shop
@@ -55,10 +55,10 @@ services:
             # You need to escape the variable if you want it to be expanded
             # inside the container, using a double-dollar sign.
             # source: https://github.com/docker/compose/issues/4670
-            MYSQL_DATABASE: "$${MYSQL_DATABASE_1}"
-            MYSQL_USER: "$${MYSQL_USER_1}"
-            MYSQL_PASSWORD: "$${MYSQL_PASSWORD_1}"
-            MYSQL_ROOT_PASSWORD: "$${MYSQL_ROOT_PASSWORD_1}"
+            MYSQL_DATABASE: ${MYSQL_DATABASE_1}
+            MYSQL_USER: ${MYSQL_USER_1}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD_1}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_1}
         volumes:
             - ./dump:/docker-entrypoint-initdb.d
             - persistent:/var/lib/mysql_phplogin
@@ -77,10 +77,10 @@ services:
             # You need to escape the variable if you want it to be expanded
             # inside the container, using a double-dollar sign.
             # source: https://github.com/docker/compose/issues/4670
-            MYSQL_DATABASE: "$${MYSQL_DATABASE_2}"
-            MYSQL_USER: "$${MYSQL_USER_2}"
-            MYSQL_PASSWORD: "$${MYSQL_PASSWORD_2}"
-            MYSQL_ROOT_PASSWORD: "$${MYSQL_ROOT_PASSWORD_2}"
+            MYSQL_DATABASE: ${MYSQL_DATABASE_2}
+            MYSQL_USER: ${MYSQL_USER_2}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD_2}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_2}
         volumes:
             - ./dump2:/docker-entrypoint-initdb.d
             - persistent:/var/lib/mysql_websec
@@ -110,6 +110,6 @@ services:
         links:
             - db_shop:db
         ports:
-            - 8088:80
+            - 1234:80
 volumes:
     persistent:
