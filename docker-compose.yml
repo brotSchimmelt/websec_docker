@@ -14,11 +14,35 @@ services:
         links:
             - db_1
             - db_2
+            - db_shop
         networks:
             - default
         depends_on:
             - db_1
             - db_2
+            - db_shop
+
+    db_shop:
+        image: mysql:5.7.30
+        container_name: ${NAME_MYSQL_SHOP}
+        ports:
+            - "3308:3306"
+        env_file:
+            - ./config/credentials.env
+        environment:
+            # You need to escape the variable if you want it to be expanded
+            # inside the container, using a double-dollar sign.
+            # source: https://github.com/docker/compose/issues/4670
+            MYSQL_DATABASE: "$${MYSQL_DATABASE_shop}"
+            MYSQL_USER: "$${MYSQL_USER_shop}"
+            MYSQL_PASSWORD: "$${MYSQL_PASSWORD_shop}"
+            MYSQL_ROOT_PASSWORD: "$${MYSQL_ROOT_PASSWORD_shop}"
+        volumes:
+            # - ./dump:/docker-entrypoint-initdb.d
+            - persistent:/var/lib/mysql_shop
+        networks:
+            - default
+        restart: always
 
     db_1:
         image: mysql:5.7.30
@@ -79,5 +103,13 @@ services:
             - db_2:db
         ports:
             - 8081:80
+
+    phpmyadmin_shop:
+        container_name: ${NAME_PMA_SHOP}
+        image: phpmyadmin/phpmyadmin
+        links:
+            - db_shop:db
+        ports:
+            - 8088:80
 volumes:
     persistent:
