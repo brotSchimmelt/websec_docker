@@ -27,18 +27,12 @@ services:
         container_name: ${NAME_MYSQL_SHOP}
         ports:
             - "3308:3306"
-        env_file:
-            - ./config/credentials.env
         environment:
-            # You need to escape the variable if you want it to be expanded
-            # inside the container, using a double-dollar sign.
-            # source: https://github.com/docker/compose/issues/4670
             MYSQL_DATABASE: ${MYSQL_DATABASE_SHOP}
             MYSQL_USER: ${MYSQL_USER_SHOP}
             MYSQL_PASSWORD: ${MYSQL_PASSWORD_SHOP}
             MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_SHOP}
         volumes:
-            # - ./dump:/docker-entrypoint-initdb.d
             - persistent:/var/lib/mysql_shop
         networks:
             - default
@@ -49,12 +43,7 @@ services:
         container_name: ${NAME_MYSQL_LOGIN}
         ports:
             - "3306:3306"
-        env_file:
-            - ./config/credentials.env
         environment:
-            # You need to escape the variable if you want it to be expanded
-            # inside the container, using a double-dollar sign.
-            # source: https://github.com/docker/compose/issues/4670
             MYSQL_DATABASE: ${MYSQL_DATABASE_1}
             MYSQL_USER: ${MYSQL_USER_1}
             MYSQL_PASSWORD: ${MYSQL_PASSWORD_1}
@@ -71,12 +60,7 @@ services:
         container_name: ${NAME_MYSQL_WEBSEC}
         ports:
             - "3307:3306"
-        env_file:
-            - ./config/credentials.env
         environment:
-            # You need to escape the variable if you want it to be expanded
-            # inside the container, using a double-dollar sign.
-            # source: https://github.com/docker/compose/issues/4670
             MYSQL_DATABASE: ${MYSQL_DATABASE_2}
             MYSQL_USER: ${MYSQL_USER_2}
             MYSQL_PASSWORD: ${MYSQL_PASSWORD_2}
