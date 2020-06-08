@@ -11,3 +11,9 @@ test_docker-compose.yml
 
 # credentials
 .env
+
+# original docker-compose file
+docker-compose.yml.missing-parts
+
+# local mysql_data
+mysql_data/
