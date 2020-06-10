@@ -91,15 +91,27 @@ sudo systemctl enable docker
 
 ## Docker-Compose
 
-**TODO**: Add content
- 
+**TODO**: Add more content
+
+- **Check docker-compose version**
+```
+$ docker-compose -v
+```
+or for a more verbose version:
+```
+$ docker-compose version
+```
 
 ## Docker commands
 
-- **Docker and Docker-Compose version**
+- **Check Docker version**
+```
+$ docker -v
+```
+or for a more verbose version:
 ```
 $ docker version
-$ docker-compose -v
+
 ```
 
 - **Resources used by Docker container**

@@ -1,0 +1,102 @@
+version: "3.8"
+services:
+    www:
+        container_name: "${NAME_PHP}"
+        build:
+            context: .
+            dockerfile: Dockerfile
+            args:
+                php_version: "${VERSION_PHP}"
+        ports:
+            - "80:80"
+        volumes:
+            - ./www:/var/www/html
+        links:
+            - db_shop
+            - db_1
+            - db_2
+        networks:
+            - default
+        depends_on:
+            - db_shop
+            - db_1
+            - db_2
+
+    db_shop:
+        image: mysql:5.7.30
+        container_name: ${NAME_MYSQL_SHOP}
+        ports:
+            - "3308:3306"
+        environment:
+            MYSQL_DATABASE: ${MYSQL_DATABASE_SHOP}
+            MYSQL_USER: ${MYSQL_USER_SHOP}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD_SHOP}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_SHOP}
+        volumes:
+            - persistent:/var/lib/mysql
+        networks:
+            - default
+        restart: always
+
+    db_1:
+        image: mysql:5.7.30
+        container_name: ${NAME_MYSQL_LOGIN}
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_DATABASE: ${MYSQL_DATABASE_1}
+            MYSQL_USER: ${MYSQL_USER_1}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD_1}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_1}
+        volumes:
+            - ./dump:/docker-entrypoint-initdb.d
+            - persistent1:/var/lib/mysql
+        networks:
+            - default
+        restart: always
+
+    db_2:
+        image: mysql:5.7.30
+        container_name: ${NAME_MYSQL_WEBSEC}
+        ports:
+            - "3307:3306"
+        environment:
+            MYSQL_DATABASE: ${MYSQL_DATABASE_2}
+            MYSQL_USER: ${MYSQL_USER_2}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD_2}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_2}
+        volumes:
+            - ./dump2:/docker-entrypoint-initdb.d
+            - persistent2:/var/lib/mysql
+        networks:
+            - default
+        restart: always
+
+    phpmyadmin_1:
+        container_name: ${NAME_PMA_LOGIN}
+        image: phpmyadmin/phpmyadmin
+        links:
+            - db_1:db
+        ports:
+            - 8080:80
+
+    phpmyadmin_2:
+        container_name: ${NAME_PMA_WEBSEC}
+        image: phpmyadmin/phpmyadmin
+        links:
+            - db_2:db
+        ports:
+            - 8081:80
+
+    phpmyadmin_shop:
+        container_name: ${NAME_PMA_SHOP}
+        image: phpmyadmin/phpmyadmin
+        links:
+            - db_shop:db
+        ports:
+            - 1234:80
+
+volumes:
+    persistent:
+    persistent2:
+    persistent3:

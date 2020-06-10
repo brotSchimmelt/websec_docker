@@ -3,7 +3,7 @@ services:
     www:
         container_name: "${NAME_PHP}"
         build:
-            context: ./config
+            context: .
             dockerfile: Dockerfile
             args:
                 php_version: "${VERSION_PHP}"
@@ -12,72 +12,34 @@ services:
         volumes:
             - ./www:/var/www/html
         links:
-            - db_1
-            - db_2
+            - db_shop
         networks:
             - default
         depends_on:
-            - db_1
-            - db_2
+            - db_shop
 
-    db_1:
+    db_shop:
         image: mysql:5.7.30
-        container_name: ${NAME_MYSQL_LOGIN}
+        container_name: ${NAME_MYSQL_SHOP}
         ports:
-            - "3306:3306"
-        env_file:
-            - ./config/credentials.env
+            - "3308:3306"
         environment:
-            # You need to escape the variable if you want it to be expanded
-            # inside the container, using a double-dollar sign.
-            # source: https://github.com/docker/compose/issues/4670
-            MYSQL_DATABASE: "$${MYSQL_DATABASE_1}"
-            MYSQL_USER: "$${MYSQL_USER_1}"
-            MYSQL_PASSWORD: "$${MYSQL_PASSWORD_1}"
-            MYSQL_ROOT_PASSWORD: "$${MYSQL_ROOT_PASSWORD_1}"
+            MYSQL_DATABASE: ${MYSQL_DATABASE_SHOP}
+            MYSQL_USER: ${MYSQL_USER_SHOP}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD_SHOP}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_SHOP}
         volumes:
-            - ./dump:/docker-entrypoint-initdb.d
-            - persistent:/var/lib/mysql_phplogin
+            - persistent:/var/lib/mysql
         networks:
             - default
         restart: always
 
-    db_2:
-        image: mysql:5.7.30
-        container_name: ${NAME_MYSQL_WEBSEC}
-        ports:
-            - "3307:3306"
-        env_file:
-            - ./config/credentials.env
-        environment:
-            # You need to escape the variable if you want it to be expanded
-            # inside the container, using a double-dollar sign.
-            # source: https://github.com/docker/compose/issues/4670
-            MYSQL_DATABASE: "$${MYSQL_DATABASE_2}"
-            MYSQL_USER: "$${MYSQL_USER_2}"
-            MYSQL_PASSWORD: "$${MYSQL_PASSWORD_2}"
-            MYSQL_ROOT_PASSWORD: "$${MYSQL_ROOT_PASSWORD_2}"
-        volumes:
-            - ./dump2:/docker-entrypoint-initdb.d
-            - persistent:/var/lib/mysql_websec
-        networks:
-            - default
-        restart: always
-
-    phpmyadmin_1:
-        container_name: ${NAME_PMA_LOGIN}
+    phpmyadmin_shop:
+        container_name: ${NAME_PMA_SHOP}
         image: phpmyadmin/phpmyadmin
         links:
-            - db_1:db
+            - db_shop:db
         ports:
-            - 8080:80
-
-    phpmyadmin_2:
-        container_name: ${NAME_PMA_WEBSEC}
-        image: phpmyadmin/phpmyadmin
-        links:
-            - db_2:db
-        ports:
-            - 8081:80
+            - 1234:80
 volumes:
     persistent:
