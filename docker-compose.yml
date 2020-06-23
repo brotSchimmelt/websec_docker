@@ -33,6 +33,7 @@ services:
         volumes:
             - ./sql_db_shop/:/docker-entrypoint-initdb.d
             - persistent_shop:/var/lib/mysql
+        command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
         networks:
             - default
         restart: always
@@ -58,6 +59,7 @@ services:
         volumes:
             - ./sql_db_login:/docker-entrypoint-initdb.d
             - persistent_login:/var/lib/mysql
+        command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
         networks:
             - default
         restart: always
