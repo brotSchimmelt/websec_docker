@@ -22,13 +22,13 @@ INSERT INTO `products` (`prod_id`, `prod_title`, `prod_description`, `price`, `i
 CREATE TABLE `cart` (
   `position_id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'auto incrementing id of each position in the cart, unique index',
   `prod_id` int(11) DEFAULT NULL COMMENT 'product id in the cart, unique with user_id',
-  `user_id` int(11) NOT NULL COMMENT 'corresponding user id, unique with prod_id',
+  `user_name` varchar(64) NOT NULL COMMENT 'corresponding user name, unique with prod_id',
   `quantity` int(11) NOT NULL COMMENT 'quantity',
   `timestamp` datetime NOT NULL COMMENT 'timestamp of creation'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='shopping cart data';
 
 ALTER TABLE `cart`
-  ADD UNIQUE KEY `unique_key` (`prod_id`,`user_id`);
+  ADD UNIQUE KEY `unique_key` (`prod_id`,`user_name`);
 
 
 CREATE TABLE `xss_comments` (
