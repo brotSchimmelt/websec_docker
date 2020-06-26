@@ -1,7 +1,7 @@
 version: "3.8"
 services:
     www:
-        container_name: "${NAME_PHP}"
+        container_name: "${CONTAINER_NAME_PHP}"
         build:
             context: .
             dockerfile: Dockerfile
@@ -13,33 +13,65 @@ services:
             - ./www:/var/www/html
         links:
             - db_shop
+            - db_login
         networks:
             - default
         depends_on:
             - db_shop
+            - db_login
 
     db_shop:
-        image: mysql:5.7.30
-        container_name: ${NAME_MYSQL_SHOP}
+        image: mysql:${VERSION_MYSQL}
+        container_name: ${CONTAINER_NAME_MYSQL_SHOP}
         ports:
-            - "3308:3306"
+            - "3306:3306"
         environment:
-            MYSQL_DATABASE: ${MYSQL_DATABASE_SHOP}
+            MYSQL_DATABASE: ${MYSQL_DB_SHOP}
             MYSQL_USER: ${MYSQL_USER_SHOP}
             MYSQL_PASSWORD: ${MYSQL_PASSWORD_SHOP}
             MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_SHOP}
         volumes:
-            - persistent:/var/lib/mysql
+            - ./sql_db_shop/:/docker-entrypoint-initdb.d
+            - persistent_shop:/var/lib/mysql
+        command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
         networks:
             - default
         restart: always
 
     phpmyadmin_shop:
-        container_name: ${NAME_PMA_SHOP}
+        container_name: ${CONTAINER_NAME_PMA_SHOP}
         image: phpmyadmin/phpmyadmin
         links:
             - db_shop:db
         ports:
-            - 1234:80
+            - 8080:80
+
+    db_login:
+        image: mysql:${VERSION_MYSQL}
+        container_name: ${CONTAINER_NAME_MYSQL_LOGIN}
+        ports:
+            - "3307:3306"
+        environment:
+            MYSQL_DATABASE: ${MYSQL_DB_LOGIN}
+            MYSQL_USER: ${MYSQL_USER_LOGIN}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD_LOGIN}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_LOGIN}
+        volumes:
+            - ./sql_db_login:/docker-entrypoint-initdb.d
+            - persistent_login:/var/lib/mysql
+        command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+        networks:
+            - default
+        restart: always
+
+    phpmyadmin_login:
+        container_name: ${CONTAINER_NAME_PMA_LOGIN}
+        image: phpmyadmin/phpmyadmin
+        links:
+            - db_login:db
+        ports:
+            - 8081:80
+
 volumes:
-    persistent:
+    persistent_shop:
+    persistent_login:
