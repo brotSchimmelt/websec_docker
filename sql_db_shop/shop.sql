@@ -49,6 +49,6 @@ CREATE TABLE `csrf_posts` (
   `post_id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'auto incrementing id of each post, unique index',
   `user_name` varchar(64) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'username of crosspost author',
   `message` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'post body',
-  `refferer` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'source of post',
+  `referrer` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'source of post',
   `timestamp` datetime NOT NULL COMMENT 'timestamp of creation'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='posts for the csrf challenge';
