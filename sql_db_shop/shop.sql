@@ -34,11 +34,15 @@ ALTER TABLE `cart`
 CREATE TABLE `xss_comments` (
   `comment_id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'auto incrementing id of each comment, unique index',
   `author` varchar(64) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'username of comment author',
-  `user_id` int(11) NOT NULL COMMENT 'corresponding user id',
   `text` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'comment body',
   `rating` int(11) NOT NULL COMMENT 'rating for products',
   `timestamp` datetime NOT NULL COMMENT 'timestamp of creation'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='comments for the stored xss challenge';
+
+INSERT INTO `xss_comments` (`comment_id`, `author`, `text`, `rating`, `timestamp`) VALUES
+(NULL, 'Elliot', 'I purchased this prouduct for my girlfriend''s birthday. Now I am single.', '5', '1970-01-01 00:00:01'),
+(NULL, 'anonymous', 'Totally useless!!1! I would never buy this item again!', '5', '1970-01-01 00:00:02');
+
 
 
 CREATE TABLE `csrf_posts` (
