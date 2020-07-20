@@ -7,7 +7,7 @@ CREATE TABLE `users` (
   `user_wwu_email` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'user email, unique',
   `is_unlocked` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'unlock status flag',
   `is_admin` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'admin flag',
-  `timestamp` datetime NOT NULL COMMENT 'timestamp of registration',
+  `timestamp` datetime NOT NULL DEFAULT '1970-01-01 00:00:01' COMMENT 'timestamp of registration',
   `xss_fake_cookie_id` varchar(255) NOT NULL DEFAULT 'youShouldNotGetThisCookiePleaseReportInLearnweb' COMMENT 'fake cookie for xss challenge'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='student login data';
 
