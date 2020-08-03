@@ -30,10 +30,16 @@ services:
             MYSQL_USER: ${MYSQL_USER_SHOP}
             MYSQL_PASSWORD: ${MYSQL_PASSWORD_SHOP}
             MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_SHOP}
+            TZ: ${TIMEZONE}
         volumes:
             - ./sql_db_shop/:/docker-entrypoint-initdb.d
             - persistent_shop:/var/lib/mysql
-        command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+        command:
+            [
+                "mysqld",
+                "--character-set-server=utf8mb4",
+                "--collation-server=utf8mb4_unicode_ci",
+            ]
         networks:
             - default
         restart: always
@@ -56,10 +62,16 @@ services:
             MYSQL_USER: ${MYSQL_USER_LOGIN}
             MYSQL_PASSWORD: ${MYSQL_PASSWORD_LOGIN}
             MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_LOGIN}
+            TZ: ${TIMEZONE}
         volumes:
             - ./sql_db_login:/docker-entrypoint-initdb.d
             - persistent_login:/var/lib/mysql
-        command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+        command:
+            [
+                "mysqld",
+                "--character-set-server=utf8mb4",
+                "--collation-server=utf8mb4_unicode_ci",
+            ]
         networks:
             - default
         restart: always
