@@ -3,7 +3,7 @@ services:
     www:
         container_name: "${CONTAINER_NAME_PHP}"
         build:
-            context: .
+            context: ./apache_php
             dockerfile: Dockerfile
             args:
                 php_version: "${VERSION_PHP}"
