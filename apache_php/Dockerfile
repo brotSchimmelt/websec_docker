@@ -20,6 +20,8 @@ RUN apt-get update && apt-get install msmtp -y
 COPY msmtprc /etc/msmtprc
 RUN chmod 600 /etc/msmtprc
 RUN chown www-data:www-data /etc/msmtprc
+RUN mkdir /var/log/msmtp
+RUN chown www-data:www-data /var/log/msmtp/
 
 # Use the php.ini-development
 RUN mv /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
