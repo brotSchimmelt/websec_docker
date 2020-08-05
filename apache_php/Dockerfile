@@ -1,5 +1,5 @@
 # This Dockerfile provides an Apache Webserver with PHP
-# 
+#
 
 # This is the default value for the php version
 ARG php_version=7.3-apache
@@ -19,6 +19,7 @@ RUN apt-get update && apt-get install msmtp -y
 # Copy the mSMTP config file
 COPY msmtprc /etc/msmtprc
 RUN chmod 600 /etc/msmtprc
+RUN chown www-data:www-data /etc/msmtprc
 
 # Use the php.ini-development
 RUN mv /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
