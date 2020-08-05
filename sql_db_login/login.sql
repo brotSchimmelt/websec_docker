@@ -14,3 +14,14 @@ CREATE TABLE `users` (
 ALTER TABLE `users`
   ADD UNIQUE KEY `user_name` (`user_name`),
   ADD UNIQUE KEY `user_wwu_email` (`user_wwu_email`);
+
+CREATE TABLE `resetPwd` (
+  `request_id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL COMMENT 'auto incrementing id of each request, unique index',
+  `user_wwu_email` TEXT NOT NULL COMMENT 'user email, unique',
+  `request_selector` TEXT NOT NULL COMMENT 'selector token',
+  `request_token` LONGTEXT NOT NULL COMENT 'hashed validator token',
+  `request_expiration` TEXT NOT NULL COMMENT 'time in seconds for how long the tokens are valid'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='pwd reset token data';
+
+ALTER TABLE `resetPwd`
+  ADD UNIQUE KEY `user_wwu_email` (`user_wwu_email`);
