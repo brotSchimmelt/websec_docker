@@ -8,12 +8,21 @@ CREATE TABLE `users` (
   `is_unlocked` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'unlock status flag',
   `is_admin` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'admin flag',
   `timestamp` datetime NOT NULL DEFAULT '1970-01-01 00:00:01' COMMENT 'timestamp of registration',
-  `xss_fake_cookie_id` varchar(255) NOT NULL DEFAULT 'youShouldNotGetThisCookiePleaseReportInLearnweb' COMMENT 'fake cookie for xss challenge'
+  `last_login` datetime DEFAULT '1970-01-01 00:00:01' COMMENT 'timestamp of last login'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='student login data';
 
 ALTER TABLE `users`
   ADD UNIQUE KEY `user_name` (`user_name`),
   ADD UNIQUE KEY `user_wwu_email` (`user_wwu_email`);
+
+CREATE TABLE `fakeCookie` (
+  `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL COMMENT 'auto incrementing id of each request, unique index',
+  `user_name` varchar(64) NOT NULL COLLATE utf8mb4_unicode_ci COMMENT 'user name, unique',
+  `challenge_cookie` varchar(255) NOT NULL DEFAULT 'youShouldNotGetThisCookiePleaseReportInLearnweb' COMMENT 'fake cookie for XSS challenge'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='XSS fake cookie';
+
+ALTER TABLE `fakeCookie`
+  ADD UNIQUE KEY `user_name` (`user_name`);
 
 CREATE TABLE `resetPwd` (
   `request_id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL COMMENT 'auto incrementing id of each request, unique index',
