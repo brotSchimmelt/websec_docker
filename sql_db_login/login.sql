@@ -16,13 +16,26 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `user_wwu_email` (`user_wwu_email`);
 
 CREATE TABLE `fakeCookie` (
-  `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL COMMENT 'auto incrementing id of each request, unique index',
+  `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL COMMENT 'auto incrementing id of each user, unique index',
   `user_name` varchar(64) NOT NULL COLLATE utf8mb4_unicode_ci COMMENT 'user name, unique',
   `reflective_xss` varchar(255) NOT NULL DEFAULT 'youShouldNotGetThisCookiePleaseReportInLearnweb' COMMENT 'fake cookie for REFLECTIVE XSS challenge',
   `stored_xss` varchar(255) NOT NULL DEFAULT 'youShouldNotGetThisCookiePleaseReportInLearnweb' COMMENT 'fake cookie for STORED XSS challenge'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='XSS fake cookie';
 
 ALTER TABLE `fakeCookie`
+  ADD UNIQUE KEY `user_name` (`user_name`);
+
+CREATE TABLE `challengeStatus` (
+  `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL COMMENT 'auto incrementing id of each user, unique index',
+  `user_name` varchar(64) NOT NULL COLLATE utf8mb4_unicode_ci COMMENT 'user name, unique',
+  `reflective_xss` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'status for REFLECTIVE XSS challenge',
+  `stored_xss` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'status for STORED XSS challenge',
+  `sqli` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'status for SQLI challenge',
+  `csrf` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'status for CSRF challenge',
+  `csrf_referrer` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'status for CSRF part II challenge'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='challange status';
+
+ALTER TABLE `challengeStatus`
   ADD UNIQUE KEY `user_name` (`user_name`);
 
 CREATE TABLE `resetPwd` (
