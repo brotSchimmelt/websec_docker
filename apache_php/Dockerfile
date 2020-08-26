@@ -1,5 +1,4 @@
-# This Dockerfile provides an Apache Webserver with PHP
-#
+## This Dockerfile provides an Apache Webserver with PHP
 
 # This is the default value for the php version
 ARG php_version=7.3-apache
@@ -34,7 +33,10 @@ RUN sed -i 's!;date.timezone =!date.timezone = ${TIMEZONE}!g' /usr/local/etc/php
 # Set the sytem timezone
 RUN ln -snf /usr/share/zoneinfo/$TIMEZONE /etc/localtime && echo $TIMEZONE > /etc/timezone
 
+# Make sure the PHP session cookie can not be accidently changed by JavaScript in the XSS challenge
+RUN sed -i 's!session.cookie_httponly =!session.cookie_httponly =1!g' /usr/local/etc/php/php.ini
+
 # Make sure all neccessary php packages are installed
-# pdo & pdo_mysql: for the DB connection
-# mbstring: for multibyte character encoding schemes for strings
+## pdo & pdo_mysql: for the DB connection
+## mbstring: for multibyte character encoding schemes for strings
 RUN docker-php-ext-install pdo pdo_mysql mbstring
