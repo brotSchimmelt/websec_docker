@@ -19,7 +19,8 @@ CREATE TABLE `fakeCookie` (
   `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL COMMENT 'auto incrementing id of each user, unique index',
   `user_name` varchar(64) NOT NULL COLLATE utf8mb4_unicode_ci COMMENT 'user name, unique',
   `reflective_xss` varchar(255) NOT NULL DEFAULT 'youShouldNotGetThisCookiePleaseReportInLearnweb' COMMENT 'fake cookie for REFLECTIVE XSS challenge',
-  `stored_xss` varchar(255) NOT NULL DEFAULT 'youShouldNotGetThisCookiePleaseReportInLearnweb' COMMENT 'fake cookie for STORED XSS challenge'
+  `stored_xss` varchar(255) NOT NULL DEFAULT 'youShouldNotGetThisCookiePleaseReportInLearnweb' COMMENT 'fake cookie for STORED XSS challenge',
+  `fake_token` varchar(255) NOT NULL DEFAULT 'youShouldNotGetThisTokenPleaseReportInLearnweb' COMMENT 'fake token for HARD CSRF challenge'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='XSS fake cookie';
 
 ALTER TABLE `fakeCookie`
