@@ -32,7 +32,12 @@ CREATE TABLE `challengeStatus` (
   `stored_xss` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'status for STORED XSS challenge',
   `sqli` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'status for SQLI challenge',
   `csrf` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'status for CSRF challenge',
-  `csrf_referrer` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'status for CSRF part II challenge'
+  `csrf_referrer` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'status for CSRF part II challenge',
+  `reflective_xss_hard` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'status for hard REFLECTIVE XSS challenge',
+  `stored_xss_hard` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'status for hard STORED XSS challenge',
+  `sqli_hard` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'status for hard SQLI challenge',
+  `csrf_hard` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'status for hard CSRF challenge',
+  `csrf_referrer_hard` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'status for hard CSRF part II challenge'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='challange status';
 
 ALTER TABLE `challengeStatus`
