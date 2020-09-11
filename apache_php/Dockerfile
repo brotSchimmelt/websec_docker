@@ -6,7 +6,7 @@ ARG php_version=7.3-apache
 FROM php:$php_version
 
 # Variables
-ENV APACHE_DOCUMENT_ROOT=/var/www/html/shop/public
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 ENV TIMEZONE="Europe/Berlin"
 
 # Set the new document root
