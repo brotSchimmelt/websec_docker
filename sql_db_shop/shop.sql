@@ -9,14 +9,14 @@ CREATE TABLE `products` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='fake product data';
 
 INSERT INTO `products` (`prod_id`, `prod_title`, `prod_description`, `price`, `img_path`) VALUES
-(1, 'Demo Product A', 'Some quick example text to build on the card title and make up the bulk of the cards content.', 100, '/assets/img/'),
-(2, 'Demo Product B', 'Some quick example text to build on the card title and make up the bulk of the cards content.', 200, '/assets/img/'),
-(3, 'Demo Product C', 'Some quick example text to build on the card title and make up the bulk of the cards content.', 300, '/assets/img/'),
-(4, 'Demo Product D', 'Some quick example text to build on the card title and make up the bulk of the cards content.', 400, '/assets/img/'),
-(5, 'Demo Product E', 'Some quick example text to build on the card title and make up the bulk of the cards content.', 500, '/assets/img/'),
-(6, 'Demo Product F', 'Some quick example text to build on the card title and make up the bulk of the cards content.', 600, '/assets/img/'),
-(7, 'Demo Product G', 'Some quick example text to build on the card title and make up the bulk of the cards content.', 700, '/assets/img/'),
-(8, 'Demo Product H', 'Some quick example text to build on the card title and make up the bulk of the cards content.', 800, '/assets/img/');
+(1, 'WebSec Mug', 'Some quick example text to build on the card title and make up the bulk of the cards content.', 100, '/assets/img/prod/prod_mug.jpg'),
+(2, 'WebSec Bananaslicer', 'Some quick example text to build on the card title and make up the bulk of the cards content.', 200, '/assets/img/prod/prod_bananaslicer.jpg'),
+(3, 'WebSec Bag', 'Some quick example text to build on the card title and make up the bulk of the cards content.', 300, '/assets/img/prod/prod_bag.jpg'),
+(4, 'WebSec Pillow', 'Some quick example text to build on the card title and make up the bulk of the cards content.', 400, '/assets/img/prod/prod_pillow.jpg'),
+(5, 'WebSec T-Shirt', 'Some quick example text to build on the card title and make up the bulk of the cards content.', 500, '/assets/img/prod/prod_tshirt2.jpg'),
+(6, 'WebSec Hoodie', 'Some quick example text to build on the card title and make up the bulk of the cards content.', 600, '/assets/img/prod/prod_hoodie.jpg'),
+(7, 'WebSec Sweater', 'Some quick example text to build on the card title and make up the bulk of the cards content.', 700, '/assets/img/prod/prod_sweater.jpg'),
+(8, 'WebSec Classic T-Shirt', 'Some quick example text to build on the card title and make up the bulk of the cards content.', 800, '/assets/img/prod/prod_tshirt1.jpg');
 
 
 CREATE TABLE `cart` (
