@@ -148,7 +148,7 @@ read answer
 fi
 
 printf "setting permission for www-data ...\n\n"
-sudo chown www-data ./www/data
+sudo chown www-data ./www/data &> /dev/null
 
 printf "building container images (this might take a while) ...\n\n"
 docker-compose build -q
