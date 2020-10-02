@@ -188,10 +188,10 @@ printf "flushing changes and restart docker ..."
 sudo systemctl daemon-reload
 sudo systemctl restart docker
 else
-printf "\n${green}OK, proxy settings remain unchanged!${noColor}"
+printf "\n${green}OK, proxy settings remain unchanged!${noColor}\n\n"
 fi
 
-# printf "building container images (this might take a while) ...\n\n"
+printf "building container images (this might take a while) ...\n\n"
 docker-compose build -q
 
 printf "\n\nYou can now start the server with ${green}docker-compose up -d${noColor}\n\n"
