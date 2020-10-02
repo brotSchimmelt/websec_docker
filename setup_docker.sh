@@ -104,13 +104,13 @@ printf "Writing to php config files ...\n\n"
 cp ./www/config/db_login.php ./www/config/db_login.backup
 cp ./www/config/db_shop.php ./www/config/db_shop.backup
 
-sed -i '' "s!// TODO: change credentials to real ones!!g" ./www/config/db_login.php
-sed -i '' "s!'DB_USER_LOGIN', '.*'!'DB_USER_LOGIN', '$user'!g" ./www/config/db_login.php
-sed -i '' "s!'DB_PWD_LOGIN', '.*'!'DB_PWD_LOGIN', '$pwd'!g" ./www/config/db_login.php
+sed -i "s!// TODO: change credentials to real ones!!g" ./www/config/db_login.php
+sed -i "s!'DB_USER_LOGIN', '.*'!'DB_USER_LOGIN', '$user'!g" ./www/config/db_login.php
+sed -i "s!'DB_PWD_LOGIN', '.*'!'DB_PWD_LOGIN', '$pwd'!g" ./www/config/db_login.php
 
-sed -i '' "s!// TODO: change credentials to real ones!!g" ./www/config/db_shop.php
-sed -i '' "s!'DB_USER_SHOP', '.*'!'DB_USER_SHOP', '$user'!g" ./www/config/db_shop.php
-sed -i '' "s!'DB_PWD_SHOP', '.*'!'DB_PWD_SHOP', '$pwd'!g" ./www/config/db_shop.php
+sed -i "s!// TODO: change credentials to real ones!!g" ./www/config/db_shop.php
+sed -i "s!'DB_USER_SHOP', '.*'!'DB_USER_SHOP', '$user'!g" ./www/config/db_shop.php
+sed -i "s!'DB_PWD_SHOP', '.*'!'DB_PWD_SHOP', '$pwd'!g" ./www/config/db_shop.php
 
 sleep 2
 
