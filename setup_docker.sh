@@ -181,9 +181,13 @@ sudo sed -i 's!second!"HTTPS_PROXY=http://wwwproxy.uni-muenster.de:3128"!g' /etc
 printf "changing 'Dockerfile' ...\n\n"
 sed -i 's!# ENV http_proxy http://wwwproxy.uni-muenster.de:3128!ENV http_proxy http://wwwproxy.uni-muenster.de:3128!g' ./apache_php/Dockerfile
 sed -i 's!# ENV https_proxy http://wwwproxy.uni-muenster.de:3128!ENV https_proxy http://wwwproxy.uni-muenster.de:3128!g' ./apache_php/Dockerfile
+
+printf "flushing changes and restart docker ...\n\n"
+sudo systemctl daemon-reload
+sudo systemctl restart docker
 fi
 
 # printf "building container images (this might take a while) ...\n\n"
 # docker-compose build -q
 
-printf "\n\nYou can now start the server with ${green}'docker-compose up -d'${noColor}\n\n"
+printf "\n\nYou can now start the server with ${green}docker-compose up -d${noColor}\n\n"
