@@ -1,5 +1,17 @@
 #!/bin/bash
 
+# default values
+php_version="7.3-apache"
+mysql_version="5.7.30"
+timezone="Europe/Berlin"
+proxy="http://wwwproxy.uni-muenster.de:3128"
+
+# colors
+red="\031[0;32m"
+orange="\033[0;33m"
+green="\033[0;32m"
+noColor="\033[0m"
+
 printf "\nThis script will set up the .env file for docker and build the container images.\n\n"
 
 printf "Continue? [Y/n]: "
@@ -62,11 +74,6 @@ fi
 done
 
 printf "\n\nWriting to '.env' file ...\n\n"
-
-# default values
-php_version="7.3-apache"
-mysql_version="5.7.30"
-timezone="Europe/Berlin"
 
 # content of the configuration file
 env_content="VERSION_PHP=$php_version
@@ -150,7 +157,33 @@ fi
 printf "setting permission for www-data ...\n\n"
 sudo chown www-data ./www/data &> /dev/null
 
-printf "building container images (this might take a while) ...\n\n"
-docker-compose build -q
+printf "Do you want to configure docker to use the uni muenster proxy? [y/N]: "
+read answer
 
-printf "You can now start the server with 'docker-compose up -d'\n\n"
+if [ -z $answer ]; then
+answer='N'
+fi
+
+if [ $answer == 'y' ] || [ $answer == 'Y' ] || [ $answer == 'yes' ]; then
+printf "\n\nsetting ${orange}wwwproxy.uni-muenster.de:3128${noColor} as HTTP and HTTPS proxy ...\n\n"
+
+sleep 1
+
+printf "creating a systemd drop-in directory for the docker service ...\n\n"
+sudo mkdir -p /etc/systemd/system/docker.service.d
+
+printf "creating 'http-proxy.conf' ...\n\n"
+sudo touch /etc/systemd/system/docker.service.d/http-proxy.conf
+sudo sh -c 'printf "[Service]\nEnvironment=first\nEnvironment=second\n"> /etc/systemd/system/docker.service.d/http-proxy.conf'
+sudo sed -i 's!first!"HTTP_PROXY=http://wwwproxy.uni-muenster.de:3128"!g' /etc/systemd/system/docker.service.d/http-proxy.conf
+sudo sed -i 's!second!"HTTPS_PROXY=http://wwwproxy.uni-muenster.de:3128"!g' /etc/systemd/system/docker.service.d/http-proxy.conf
+
+printf "changing 'Dockerfile' ...\n\n"
+sed -i 's!# ENV http_proxy http://wwwproxy.uni-muenster.de:3128!ENV http_proxy http://wwwproxy.uni-muenster.de:3128!g' ./apache_php/Dockerfile
+sed -i 's!# ENV https_proxy http://wwwproxy.uni-muenster.de:3128!ENV https_proxy http://wwwproxy.uni-muenster.de:3128!g' ./apache_php/Dockerfile
+fi
+
+# printf "building container images (this might take a while) ...\n\n"
+# docker-compose build -q
+
+printf "\n\nYou can now start the server with ${green}'docker-compose up -d'${noColor}\n\n"
