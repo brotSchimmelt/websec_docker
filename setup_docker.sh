@@ -165,7 +165,7 @@ answer='N'
 fi
 
 if [ $answer == 'y' ] || [ $answer == 'Y' ] || [ $answer == 'yes' ]; then
-printf "\n\nsetting ${orange}wwwproxy.uni-muenster.de:3128${noColor} as HTTP and HTTPS proxy ...\n\n"
+printf "\nsetting ${orange}wwwproxy.uni-muenster.de:3128${noColor} as HTTP and HTTPS proxy ...\n\n"
 
 sleep 1
 
@@ -182,11 +182,11 @@ printf "changing 'Dockerfile' ...\n\n"
 sed -i 's!# ENV http_proxy http://wwwproxy.uni-muenster.de:3128!ENV http_proxy http://wwwproxy.uni-muenster.de:3128!g' ./apache_php/Dockerfile
 sed -i 's!# ENV https_proxy http://wwwproxy.uni-muenster.de:3128!ENV https_proxy http://wwwproxy.uni-muenster.de:3128!g' ./apache_php/Dockerfile
 
-printf "flushing changes and restart docker ...\n\n"
+printf "flushing changes and restart docker ..."
 sudo systemctl daemon-reload
 sudo systemctl restart docker
 else
-printf "\n\n${green}OK, proxy settings remain unchanged!${noColor}\n\n"
+printf "\n${green}OK, proxy settings remain unchanged!${noColor}"
 fi
 
 # printf "building container images (this might take a while) ...\n\n"
