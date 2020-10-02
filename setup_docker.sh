@@ -73,7 +73,7 @@ printf "\n\nThe password does not match. Please try again!"
 fi
 done
 
-printf "\n\nWriting to '.env' file ...\n\n"
+printf "\n\nWriting .env file ...\n\n"
 
 # content of the configuration file
 env_content="VERSION_PHP=$php_version
