@@ -185,6 +185,8 @@ sed -i 's!# ENV https_proxy http://wwwproxy.uni-muenster.de:3128!ENV https_proxy
 printf "flushing changes and restart docker ...\n\n"
 sudo systemctl daemon-reload
 sudo systemctl restart docker
+else
+printf "\n\n${green}OK, proxy settings remain unchanged!${noColor}\n\n"
 fi
 
 # printf "building container images (this might take a while) ...\n\n"
