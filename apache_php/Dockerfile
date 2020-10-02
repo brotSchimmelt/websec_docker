@@ -8,6 +8,9 @@ FROM php:$php_version
 # Variables
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 ENV TIMEZONE="Europe/Berlin"
+# proxy server for the wwu network
+# ENV http_proxy http://wwwproxy.uni-muenster.de:3128
+# ENV https_proxy http://wwwproxy.uni-muenster.de:3128
 
 # Set the new document root
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
