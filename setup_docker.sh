@@ -190,6 +190,6 @@ printf "\n${green}OK, proxy settings remain unchanged!${noColor}"
 fi
 
 # printf "building container images (this might take a while) ...\n\n"
-# docker-compose build -q
+docker-compose build -q
 
 printf "\n\nYou can now start the server with ${green}docker-compose up -d${noColor}\n\n"
