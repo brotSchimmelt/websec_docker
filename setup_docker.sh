@@ -36,6 +36,12 @@ mv .env env.backup 2> /dev/null
 mv example.env env.example 2> /dev/null
 rm *.env 2> /dev/null
 
+printf "Removing any source control configurations ...\n\n"
+rm -r .git 2> /dev/null
+rm .gitignore 2> /dev/null
+rm -r ./www/.git 2> /dev/null
+rm ./www/.gitignore 2> /dev/null
+
 printf "Enter a username for the MySQL DBs: "
 read user
 
