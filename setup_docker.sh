@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# check if the script is run with 'sudo'
+if [[ $EUID -ne 0 ]];
+then
+    exec sudo /bin/bash "$0" "$@"
+fi
+
 # default values
 php_version="7.3-apache"
 mysql_version="5.7.30"
@@ -14,7 +20,7 @@ noColor="\033[0m"
 
 printf "\nThis script will set up the .env file for docker and build the container images.\n\n"
 
-printf "Continue? [Y/n]: "
+printf "Continue? [Y/n] "
 read answer
 
 if [ -z $answer ]; then
@@ -165,7 +171,7 @@ fi
 printf "setting permission for www-data ...\n\n"
 sudo chown www-data ./www/data &> /dev/null
 
-printf "Do you want to configure docker to use the uni muenster proxy? [y/N]: "
+printf "Do you want to configure docker to use the uni muenster proxy? [y/N] "
 read answer
 
 if [ -z $answer ]; then
@@ -178,29 +184,29 @@ printf "\nsetting ${orange}wwwproxy.uni-muenster.de:3128${noColor} as HTTP and H
 sleep 1
 
 printf "creating a systemd drop-in directory for the docker service ...\n\n"
-sudo mkdir -p /etc/systemd/system/docker.service.d
+mkdir -p /etc/systemd/system/docker.service.d
 
 printf "creating 'http-proxy.conf' ...\n\n"
-sudo touch /etc/systemd/system/docker.service.d/http-proxy.conf
-sudo sh -c 'printf "[Service]\nEnvironment=first\nEnvironment=second\n"> /etc/systemd/system/docker.service.d/http-proxy.conf'
-sudo sed -i 's!first!"HTTP_PROXY=http://wwwproxy.uni-muenster.de:3128"!g' /etc/systemd/system/docker.service.d/http-proxy.conf
-sudo sed -i 's!second!"HTTPS_PROXY=http://wwwproxy.uni-muenster.de:3128"!g' /etc/systemd/system/docker.service.d/http-proxy.conf
+touch /etc/systemd/system/docker.service.d/http-proxy.conf
+sh -c 'printf "[Service]\nEnvironment=first\nEnvironment=second\n"> /etc/systemd/system/docker.service.d/http-proxy.conf'
+sed -i 's!first!"HTTP_PROXY=http://wwwproxy.uni-muenster.de:3128"!g' /etc/systemd/system/docker.service.d/http-proxy.conf
+sed -i 's!second!"HTTPS_PROXY=http://wwwproxy.uni-muenster.de:3128"!g' /etc/systemd/system/docker.service.d/http-proxy.conf
 
 printf "changing 'Dockerfile' ...\n\n"
 sed -i 's!# ENV http_proxy http://wwwproxy.uni-muenster.de:3128!ENV http_proxy http://wwwproxy.uni-muenster.de:3128!g' ./apache_php/Dockerfile
 sed -i 's!# ENV https_proxy http://wwwproxy.uni-muenster.de:3128!ENV https_proxy http://wwwproxy.uni-muenster.de:3128!g' ./apache_php/Dockerfile
 
 printf "flushing changes and restart docker ..."
-sudo systemctl daemon-reload
+systemctl daemon-reload
 sleep 5
-sudo systemctl restart docker
+systemctl restart docker
 sleep 5
 
 else
 printf "\n${green}OK, proxy settings remain unchanged!${noColor}\n\n"
 fi
 
-printf "building container images (this might take a while) ...\n\n"
+printf "building images (this might take up to 5 mins) ...\n\n"
 docker-compose build -q
 
 printf "\n\nYou can now start the server with ${green}docker-compose up -d${noColor}\n\n"
