@@ -48,6 +48,13 @@ rm .gitignore 2> /dev/null
 rm -r ./www/.git 2> /dev/null
 rm ./www/.gitignore 2> /dev/null
 
+printf "Removing test files ...\n\n"
+rm -r ./www/tests 2> /dev/null
+rm -r ./www/vendor 2> /dev/null
+rm ./www/composer.lock 2> /dev/null
+rm ./www/composer.json 2> /dev/null
+rm ./www/phpunit.xml 2> /dev/null
+
 printf "Enter a username for the MySQL DBs: "
 read user
 
