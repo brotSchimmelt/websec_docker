@@ -11,6 +11,7 @@ test_docker-compose.yml
 
 # credentials
 .env
+*.example
 
 # original docker-compose file
 docker-compose.yml.missing-parts
