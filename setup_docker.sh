@@ -151,7 +151,7 @@ while ( ! $done_uri ); do
     printf "Under which URI should this site be accessible? "
     read uri
 
-    printf "\nIs ${orange} $uri ${noColor} correct? [Y/n] "
+    printf "Is ${orange} $uri ${noColor} correct? [Y/n] "
     read answer
 
     if [ -z $answer ]; then
