@@ -58,23 +58,26 @@ printf "${orange}For the two DBs ('shop' & 'login') we will configure the "\
 printf "${orange}If you wish to change those, you can manually change them "\
 "in the .env file after this script is done.${noColor}\n\n\n"
 
-printf "Backing up any old configuration files ...\n\n"
+printf "Backing up any old configuration files ..."
 mv .env env.backup 2> /dev/null
 mv example.env env.example 2> /dev/null
 rm *.env 2> /dev/null
+printf "\n${green}done${noColor}\n\n"
 
-printf "Removing any source control configurations ...\n\n"
+printf "Removing any source control configurations ..."
 rm -r .git 2> /dev/null
 rm .gitignore 2> /dev/null
 rm -r ./www/.git 2> /dev/null
 rm ./www/.gitignore 2> /dev/null
+printf "\n${green}done${noColor}\n\n"
 
-printf "Removing test files ...\n\n"
+printf "Removing test files ..."
 rm -r ./www/tests 2> /dev/null
 rm -r ./www/vendor 2> /dev/null
 rm ./www/composer.lock 2> /dev/null
 rm ./www/composer.json 2> /dev/null
 rm ./www/phpunit.xml 2> /dev/null
+printf "\n${green}done${noColor}\n\n"
 
 printf "Enter a username for the MySQL DBs: "
 read user
@@ -113,7 +116,7 @@ while ( ! $done_root ); do
     fi
 done
 
-printf "\n\nWriting .env file ...\n\n"
+printf "\n\nWriting .env file ..."
 
 # content of the configuration file (.env)
 env_content="VERSION_PHP=$php_version
@@ -139,6 +142,7 @@ TIMEZONE=$timezone"
 
 echo "$env_content" >> .env
 sleep 2 # wait to ensure the file operations are done
+printf "\n${green}done${noColor}\n\n"
 
 # add server URI
 done_uri=false
@@ -148,6 +152,7 @@ while ( ! $done_uri ); do
     read uri
 
     printf "\n Is $uri correct? [Y/n] "
+    read answer
 
     if [ -z $answer ]; then
         answer='Y'
@@ -160,7 +165,7 @@ while ( ! $done_uri ); do
     fi
 done
 
-printf "\n\nWriting to php config files ...\n\n"
+printf "\n\nWriting to php config files ..."
 cp ./www/config/config.php ./www/config/config.backup
 cp ./www/config/db_login.php ./www/config/db_login.backup
 cp ./www/config/db_shop.php ./www/config/db_shop.backup
@@ -186,6 +191,7 @@ sed -i "s!'DB_PWD_SHOP', '.*'!'DB_PWD_SHOP', '$pwd'!g" \
 ./www/config/db_shop.php
 
 sleep 2 # wait to ensure the file operations are done
+printf "\n${green}done${noColor}\n\n"
 
 # check if docker is installed
 docker --version &> /dev/null
@@ -228,7 +234,7 @@ if [ $? -gt 0 ]; then
         newgrp docker
 
         sleep 2 # wait for grp operations
-        printf "\n\n"
+        printf "\n${green}done${noColor}\n\n"
     else
         printf "\n${orange}Without docker-compose you have to start the "\
         "container manually.${noColor}\n\n"
@@ -236,8 +242,9 @@ if [ $? -gt 0 ]; then
     fi
 fi
 
-printf "setting permission for www-data ...\n\n"
+printf "Setting permission for www-data ..."
 chown www-data ./www/data &> /dev/null
+printf "\n${green}done${noColor}\n\n"
 
 printf "Do you want to configure docker to use the Uni Muenster proxy? [y/N] "
 read answer
@@ -250,11 +257,12 @@ if [ $answer == 'y' ] || [ $answer == 'Y' ] || [ $answer == 'yes' ]; then
     printf "\nsetting ${orange}wwwproxy.uni-muenster.de:3128${noColor} as "\
     "HTTP and HTTPS proxy ...\n\n"
 
-    printf "creating a systemd drop-in directory for the docker service ...\n\n"
+    printf "creating a systemd drop-in directory for the docker service ..."
     mkdir -p /etc/systemd/system/docker.service.d
     sleep 1
+    printf "\n${green}done${noColor}\n\n"
 
-    printf "creating 'http-proxy.conf' ...\n\n"
+    printf "creating 'http-proxy.conf' ..."
     touch /etc/systemd/system/docker.service.d/http-proxy.conf
     sleep 1
     sh -c 'printf "[Service]\nEnvironment=first\nEnvironment=second\n"> \
@@ -263,28 +271,32 @@ if [ $answer == 'y' ] || [ $answer == 'Y' ] || [ $answer == 'yes' ]; then
     /etc/systemd/system/docker.service.d/http-proxy.conf
     sed -i 's!second!"HTTPS_PROXY=http://wwwproxy.uni-muenster.de:3128"!g' \
     /etc/systemd/system/docker.service.d/http-proxy.conf
+    printf "\n${green}done${noColor}\n\n"
 
-    printf "changing 'Dockerfile' ...\n\n"
+    printf "changing 'Dockerfile' ..."
     sed -i 's!# ENV http_proxy http://wwwproxy.uni-muenster.de:3128!ENV \
     http_proxy http://wwwproxy.uni-muenster.de:3128!g' ./apache_php/Dockerfile
     sed -i 's!# ENV https_proxy http://wwwproxy.uni-muenster.de:3128!ENV \
     https_proxy http://wwwproxy.uni-muenster.de:3128!g' ./apache_php/Dockerfile
+    printf "\n${green}done${noColor}\n\n"
 
-    printf "flushing changes and restart docker ...\n\n"
+    printf "flushing changes and restart docker ..."
     systemctl daemon-reload
     sleep 5
     systemctl restart docker
     sleep 5
+    printf "\n${green}done${noColor}\n\n"
 
 else
     printf "\n${green}OK, proxy settings remain unchanged!${noColor}\n\n"
 fi
 
 printf "building images (this might take up to 5 mins) ...\n\n"
-docker-compose build -q
+docker-compose build -q --no-cache
+printf "\n${green}done${noColor}\n\n"
 
-printf "\n\nYou can now start the server with ${green}docker-compose "\
-"up -d${noColor}\n"
+printf "You can now start the server with ${green}docker-compose "\
+"up -d${noColor}!\n"
 
-printf "${orange}Don't forget to change the default password for the "\
-"administrator user after first login!${noColor}\n\n"
+printf "${orange}Attention: Don't forget to change the default password for "\
+"the administrator user after first login!${noColor}\n\n"
