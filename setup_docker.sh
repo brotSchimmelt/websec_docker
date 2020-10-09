@@ -165,7 +165,7 @@ while ( ! $done_uri ); do
     fi
 done
 
-printf \n"Writing to php config files ..."
+printf "\nWriting to php config files ..."
 cp ./www/config/config.php ./www/config/config.backup
 cp ./www/config/db_login.php ./www/config/db_login.backup
 cp ./www/config/db_shop.php ./www/config/db_shop.backup
