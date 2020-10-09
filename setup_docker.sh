@@ -151,7 +151,7 @@ while ( ! $done_uri ); do
     printf "Under which URI should this site be accessible? "
     read uri
 
-    printf "\n Is $uri correct? [Y/n] "
+    printf "\nIs ${orange} $uri ${noColor} correct? [Y/n] "
     read answer
 
     if [ -z $answer ]; then
@@ -165,7 +165,7 @@ while ( ! $done_uri ); do
     fi
 done
 
-printf "\n\nWriting to php config files ..."
+printf \n"Writing to php config files ..."
 cp ./www/config/config.php ./www/config/config.backup
 cp ./www/config/db_login.php ./www/config/db_login.backup
 cp ./www/config/db_shop.php ./www/config/db_shop.backup
@@ -291,12 +291,12 @@ else
     printf "\n${green}OK, proxy settings remain unchanged!${noColor}\n\n"
 fi
 
-printf "building images (this might take up to 5 mins) ...\n\n"
-docker-compose build -q --no-cache
+printf "building images (this might take up to 5 mins) ..."
+docker-compose build -q
 printf "\n${green}done${noColor}\n\n"
 
 printf "You can now start the server with ${green}docker-compose "\
 "up -d${noColor}!\n"
 
 printf "${orange}Attention: Don't forget to change the default password for "\
-"the administrator user after first login!${noColor}\n\n"
+"the ${noCOlor}administrator${orange} user after the first login!${noColor}\n\n"
