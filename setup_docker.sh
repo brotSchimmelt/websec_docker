@@ -118,10 +118,32 @@ TIMEZONE=$timezone"
 echo "$env_content" >> .env
 sleep 2
 
-printf "Writing to php config files ...\n\n"
+done_uri=false
+while ( ! $done_uri )
+do
+
+printf "Under which URI should this site be accessible? "
+read uri
+
+printf "\n Is $uri correct? [Y/n] "
+
+if [ -z $answer ]; then
+answer='Y'
+fi
+
+if [ $answer == 'n' ] || [ $answer == 'N' ]; then
+done_uri=false
+else
+done_uri=true
+fi
+done
+
+printf "\n\nWriting to php config files ...\n\n"
+cp ./www/config/config.php ./www/config/config.backup
 cp ./www/config/db_login.php ./www/config/db_login.backup
 cp ./www/config/db_shop.php ./www/config/db_shop.backup
 
+sed -i "s!localhost!$uri!g" ./www/config/config.php
 sed -i "s!// TODO: change credentials to real ones!!g" ./www/config/db_login.php
 sed -i "s!// Dummy credentials from the docker example.env file!!g" ./www/config/db_login.php
 sed -i "s!'DB_USER_LOGIN', '.*'!'DB_USER_LOGIN', '$user'!g" ./www/config/db_login.php
