@@ -254,8 +254,8 @@ if [ -z $answer ]; then
 fi
 
 if [ $answer == 'y' ] || [ $answer == 'Y' ] || [ $answer == 'yes' ]; then
-    printf "\nsetting ${orange}wwwproxy.uni-muenster.de:3128${noColor} as " \
-    "HTTP and HTTPS proxy ...\n\n"
+    printf "\nsetting ${orange}wwwproxy.uni-muenster.de:3128${noColor} as "
+    printf "HTTP and HTTPS proxy ...\n\n"
 
     printf "creating a systemd drop-in directory for the docker service ..."
     mkdir -p /etc/systemd/system/docker.service.d
