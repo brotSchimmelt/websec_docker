@@ -299,4 +299,4 @@ printf "You can now start the server with ${green}docker-compose "\
 "up -d${noColor}!\n"
 
 printf "${orange}Attention: Don't forget to change the default password for "\
-"the ${noCOlor}administrator${orange} user after the first login!${noColor}\n\n"
+"the ${noColor}administrator${orange} user after the first login!${noColor}\n\n"
