@@ -203,7 +203,7 @@ printf "changing 'Dockerfile' ...\n\n"
 sed -i 's!# ENV http_proxy http://wwwproxy.uni-muenster.de:3128!ENV http_proxy http://wwwproxy.uni-muenster.de:3128!g' ./apache_php/Dockerfile
 sed -i 's!# ENV https_proxy http://wwwproxy.uni-muenster.de:3128!ENV https_proxy http://wwwproxy.uni-muenster.de:3128!g' ./apache_php/Dockerfile
 
-printf "flushing changes and restart docker ..."
+printf "flushing changes and restart docker ...\n\n"
 systemctl daemon-reload
 sleep 5
 systemctl restart docker
@@ -216,4 +216,6 @@ fi
 printf "building images (this might take up to 5 mins) ...\n\n"
 docker-compose build -q
 
-printf "\n\nYou can now start the server with ${green}docker-compose up -d${noColor}\n\n"
+printf "\n\nYou can now start the server with ${green}docker-compose up -d${noColor}\n"
+
+printf "${orange}Don't forget to change the default password for the administrator user after first login!${noColor}\n\n"
