@@ -36,8 +36,7 @@ printf "\n\n##### NOTE #####\n"
 printf "For the two DBs ('shop' & 'login') we will configure the same user and password.\n"
 printf "If you wish to change those, you can manually change them in the .env file.\n\n\n"
 
-printf "Removing any old configuration files ...\n\n"
-# make backup files
+printf "Backing up any old configuration files ...\n\n"
 mv .env env.backup 2> /dev/null
 mv example.env env.example 2> /dev/null
 rm *.env 2> /dev/null
