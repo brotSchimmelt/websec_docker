@@ -170,7 +170,7 @@ cp ./www/config/config.php ./www/config/config.backup
 cp ./www/config/db_login.php ./www/config/db_login.backup
 cp ./www/config/db_shop.php ./www/config/db_shop.backup
 
-sed -i "s!'SITE_URL', '.*'!$uri!g" ./www/config/config.php
+sed -i "s!'SITE_URL', '.*'!SITE_URL', '$uri'!g" ./www/config/config.php
 
 sed -i "s!// TODO: change credentials to real ones!!g" \
 ./www/config/db_login.php
