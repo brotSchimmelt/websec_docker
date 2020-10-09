@@ -254,7 +254,7 @@ if [ -z $answer ]; then
 fi
 
 if [ $answer == 'y' ] || [ $answer == 'Y' ] || [ $answer == 'yes' ]; then
-    printf "\nsetting ${orange}wwwproxy.uni-muenster.de:3128${noColor} as "\
+    printf "\nsetting ${orange}wwwproxy.uni-muenster.de:3128${noColor} as " \
     "HTTP and HTTPS proxy ...\n\n"
 
     printf "creating a systemd drop-in directory for the docker service ..."
@@ -274,10 +274,10 @@ if [ $answer == 'y' ] || [ $answer == 'Y' ] || [ $answer == 'yes' ]; then
     printf "\n${green}done${noColor}\n\n"
 
     printf "changing 'Dockerfile' ..."
-    sed -i 's!# ENV http_proxy http://wwwproxy.uni-muenster.de:3128!ENV \
-    http_proxy http://wwwproxy.uni-muenster.de:3128!g' ./apache_php/Dockerfile
-    sed -i 's!# ENV https_proxy http://wwwproxy.uni-muenster.de:3128!ENV \
-    https_proxy http://wwwproxy.uni-muenster.de:3128!g' ./apache_php/Dockerfile
+    sed -i 's!# ENV!ENV!g' ./apache_php/Dockerfile
+    # sed -i \
+    # 's!# ENV https_proxy http://wwwproxy.uni-muenster.de:3128!ENV https_proxy http://wwwproxy.uni-muenster.de:3128!g' \
+    # ./apache_php/Dockerfile
     printf "\n${green}done${noColor}\n\n"
 
     printf "flushing changes and restart docker ..."
