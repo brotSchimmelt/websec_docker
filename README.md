@@ -1,5 +1,5 @@
 # Websec Docker Environment
-**TODO**: Add descriptive description to describe $this.
+**TODO**: Update README for new script and new WWU server environment.
 
  
 
