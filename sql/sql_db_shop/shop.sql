@@ -40,11 +40,6 @@ CREATE TABLE `xss_comments` (
   `post_time` varchar(64) COLLATE utf8mb4_general_ci DEFAULT 'just now' COMMENT 'time of posting'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='comments for the stored xss challenge';
 
-INSERT INTO `xss_comments` (`comment_id`, `author`, `text`, `rating`, `timestamp`, `post_time`) VALUES
-(NULL, 'anonymous', 'Totally useless!!1! I would never buy this item again!', '5', '1970-01-01 00:00:02', '2 weeks ago'),
-(NULL, 'Elliot', 'I purchased this prouduct for my girlfriend''s birthday. Now I am single.', '5', '1970-01-01 00:00:01', '1 hour ago');
-
-
 
 CREATE TABLE `csrf_posts` (
   `post_id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'auto incrementing id of each post, unique index',
