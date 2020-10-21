@@ -1,9 +1,10 @@
 ## This Dockerfile provides an Apache Webserver with PHP
 
 # This is the default value for the php version
-ARG php_version=7.3-apache
+ARG php_version=7.4-apache
 # If $php_version is set in the docker-compose file, the default is overridden
 FROM php:$php_version
+# FROM phpmyadmin/phpmyadmin
 
 # Variables
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
@@ -16,8 +17,8 @@ ENV TIMEZONE="Europe/Berlin"
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# Install mSMTP
-RUN apt-get update && apt-get install msmtp -y
+# Install mSMTP and mbstring (libonig-dev)
+RUN apt-get update && apt-get install msmtp libonig-dev -y 
 # Copy the mSMTP config file
 COPY msmtprc /etc/msmtprc
 RUN chmod 600 /etc/msmtprc
@@ -42,4 +43,4 @@ RUN sed -i 's!session.cookie_httponly =!session.cookie_httponly =1!g' /usr/local
 # Make sure all neccessary php packages are installed
 ## pdo & pdo_mysql: for the DB connection
 ## mbstring: for multibyte character encoding schemes for strings
-RUN docker-php-ext-install pdo pdo_mysql mbstring
+RUN docker-php-ext-install pdo pdo_mysql mysqli
