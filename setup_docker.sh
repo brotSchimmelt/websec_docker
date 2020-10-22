@@ -26,8 +26,8 @@ then
 fi
 
 # default values for the env variables
-php_version="7.3-apache"
-mysql_version="5.7.30"
+php_version="7.4-apache"
+mysql_version="8.0"
 timezone="Europe/Berlin"
 proxy="http://wwwproxy.uni-muenster.de:3128"
 
@@ -116,6 +116,25 @@ while ( ! $done_root ); do
     fi
 done
 
+printf "\n\nDo you want to use phpMyAdmin? [Y/n] "
+read answer
+
+if [ -z $answer ]; then
+    answer='Y'
+fi
+
+if [ $answer == 'n' ] || [ $answer == 'N' ]; then
+    printf "\nOK, phpMyAdmin will ${orange}not${noColor} be configured."
+else
+    printf "\nChanging docker-compose settings ..."
+    cp docker-compose.yml docker-compose_php.backup
+    cp docker-compose_pma.yml docker-compose_pma.backup
+    mv docker-compose.yml docker-compose_php.yml
+    mv docker-compose_pma.yml docker-compose.yml
+    sleep 2 # wait to ensure the file operations are done
+    printf "\n${green}done${noColor}"
+fi
+
 printf "\n\nWriting .env file ..."
 
 # content of the configuration file (.env)
@@ -123,10 +142,9 @@ env_content="VERSION_PHP=$php_version
 VERSION_MYSQL=$mysql_version
 
 CONTAINER_NAME_PHP=php_apache
+CONTAINER_NAME_PHP_PMA=php_apache_pma
 CONTAINER_NAME_MYSQL_SHOP=db_shop
 CONTAINER_NAME_MYSQL_LOGIN=db_login
-CONTAINER_NAME_PMA_SHOP=phpmyadmin_shop
-CONTAINER_NAME_PMA_LOGIN=phpmyadmin_login
 
 MYSQL_DB_SHOP=shop
 MYSQL_USER_SHOP=$user
@@ -140,7 +158,7 @@ MYSQL_ROOT_PASSWORD_LOGIN=$root_pwd
 
 TIMEZONE=$timezone"
 
-echo "$env_content" >> .env
+echo "$env_content" > .env
 sleep 2 # wait to ensure the file operations are done
 printf "\n${green}done${noColor}\n\n"
 
