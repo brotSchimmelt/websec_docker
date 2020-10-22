@@ -67,16 +67,16 @@ printf "\n${green}done${noColor}\n\n"
 printf "Removing any source control configurations ..."
 rm -r .git 2> /dev/null
 rm .gitignore 2> /dev/null
-rm -r ./www/.git 2> /dev/null
-rm ./www/.gitignore 2> /dev/null
+rm -r ./apache_php/www/.git 2> /dev/null
+rm ./apache_php/www/.gitignore 2> /dev/null
 printf "\n${green}done${noColor}\n\n"
 
 printf "Removing test files ..."
-rm -r ./www/tests 2> /dev/null
-rm -r ./www/vendor 2> /dev/null
-rm ./www/composer.lock 2> /dev/null
-rm ./www/composer.json 2> /dev/null
-rm ./www/phpunit.xml 2> /dev/null
+rm -r ./apache_php/www/tests 2> /dev/null
+rm -r ./apache_php/www/vendor 2> /dev/null
+rm ./apache_php/www/composer.lock 2> /dev/null
+rm ./apache_php/www/composer.json 2> /dev/null
+rm ./apache_php/www/phpunit.xml 2> /dev/null
 printf "\n${green}done${noColor}\n\n"
 
 printf "Enter a username for the MySQL DBs: "
@@ -166,29 +166,29 @@ while ( ! $done_uri ); do
 done
 
 printf "\nWriting to php config files ..."
-cp ./www/config/config.php ./www/config/config.backup
-cp ./www/config/db_login.php ./www/config/db_login.backup
-cp ./www/config/db_shop.php ./www/config/db_shop.backup
+cp ./apache_php/www/config/config.php ./apache_php/www/config/config.backup
+cp ./apache_php/www/config/db_login.php ./apache_php/www/config/db_login.backup
+cp ./apache_php/www/config/db_shop.php ./apache_php/www/config/db_shop.backup
 
-sed -i "s!'SITE_URL', '.*'!'SITE_URL', '$uri'!g" ./www/config/config.php
+sed -i "s!'SITE_URL', '.*'!'SITE_URL', '$uri'!g" ./apache_php/www/config/config.php
 
 sed -i "s!// TODO: change credentials to real ones!!g" \
-./www/config/db_login.php
+./apache_php/www/config/db_login.php
 sed -i "s!// Dummy credentials from the docker example.env file!!g" \
-./www/config/db_login.php
+./apache_php/www/config/db_login.php
 sed -i "s!'DB_USER_LOGIN', '.*'!'DB_USER_LOGIN', '$user'!g" \
-./www/config/db_login.php
+./apache_php/www/config/db_login.php
 sed -i "s!'DB_PWD_LOGIN', '.*'!'DB_PWD_LOGIN', '$pwd'!g" \
-./www/config/db_login.php
+./apache_php/www/config/db_login.php
 
 sed -i "s!// TODO: change credentials to real ones!!g" \
-./www/config/db_shop.php
+./apache_php/www/config/db_shop.php
 sed -i "s!// Dummy credentials from the docker example.env file!!g" \
-./www/config/db_shop.php
+./apache_php/www/config/db_shop.php
 sed -i "s!'DB_USER_SHOP', '.*'!'DB_USER_SHOP', '$user'!g" \
-./www/config/db_shop.php
+./apache_php/www/config/db_shop.php
 sed -i "s!'DB_PWD_SHOP', '.*'!'DB_PWD_SHOP', '$pwd'!g" \
-./www/config/db_shop.php
+./apache_php/www/config/db_shop.php
 
 sleep 2 # wait to ensure the file operations are done
 printf "\n${green}done${noColor}\n\n"
@@ -243,7 +243,7 @@ if [ $? -gt 0 ]; then
 fi
 
 printf "Setting permission for www-data ..."
-chown www-data ./www/data &> /dev/null
+chown www-data ./apache_php/www/data &> /dev/null
 printf "\n${green}done${noColor}\n\n"
 
 printf "Do you want to configure docker to use the Uni Muenster proxy? [y/N] "
