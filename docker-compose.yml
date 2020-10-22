@@ -10,7 +10,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - .apache_php/www:/var/www/html
+      - ./apache_php/www:/var/www/html
     links:
       - db_shop
       - db_login
@@ -32,7 +32,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_SHOP}
       TZ: ${TIMEZONE}
     volumes:
-      - ./sql/sql_db_shop/:/docker-entrypoint-initdb.d
+      - ./mysql/sql_db_shop/:/docker-entrypoint-initdb.d
       - persistent_shop:/var/lib/mysql
     command:
       [
@@ -57,7 +57,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_LOGIN}
       TZ: ${TIMEZONE}
     volumes:
-      - ./sql/sql_db_login:/docker-entrypoint-initdb.d
+      - ./mysql/sql_db_login:/docker-entrypoint-initdb.d
       - persistent_login:/var/lib/mysql
     command:
       [
@@ -79,7 +79,7 @@ services:
       - db_login:login
       - db_shop:shop
     ports:
-      - 8081:80
+      - 8080:80
 
 volumes:
   persistent_shop:

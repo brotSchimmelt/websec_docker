@@ -45,6 +45,3 @@ RUN sed -i 's!session.cookie_httponly =!session.cookie_httponly =1!g' /usr/local
 ## pdo & pdo_mysql: for the DB connection
 ## mbstring: for multibyte character encoding schemes for strings
 RUN docker-php-ext-install pdo pdo_mysql
-
-# change ownership for SQLite directory
-RUN chown www-data /var/www/html/data/
