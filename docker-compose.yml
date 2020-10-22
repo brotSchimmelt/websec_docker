@@ -1,17 +1,19 @@
 version: "3.8"
 services:
   www:
-    container_name: "${CONTAINER_NAME_PHP_PMA}"
+    container_name: "${CONTAINER_NAME_PHP}"
     build:
       context: ./apache_php
-      dockerfile: Dockerfile_apache_pma
-    environment:
-      PMA_HOSTS: login, shop
+      dockerfile: Dockerfile
+      args:
+        php_version: "${VERSION_PHP}"
     ports:
       - "80:80"
+    volumes:
+      - .apache_php/www:/var/www/html
     links:
-      - db_login:login
-      - db_shop:shop
+      - db_shop
+      - db_login
     networks:
       - default
     depends_on:
@@ -30,14 +32,14 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_SHOP}
       TZ: ${TIMEZONE}
     volumes:
-      - ./mysql/sql_db_shop/:/docker-entrypoint-initdb.d
+      - ./sql/sql_db_shop/:/docker-entrypoint-initdb.d
       - persistent_shop:/var/lib/mysql
     command:
       [
         "mysqld",
         "--default-authentication-plugin=mysql_native_password",
         "--character-set-server=utf8mb4",
-        "--collation-server=utf8mb4_0900_as_cs",
+        "--collation-server=utf8mb4_unicode_ci",
       ]
     networks:
       - default
@@ -55,18 +57,29 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_LOGIN}
       TZ: ${TIMEZONE}
     volumes:
-      - ./mysql/sql_db_login:/docker-entrypoint-initdb.d
+      - ./sql/sql_db_login:/docker-entrypoint-initdb.d
       - persistent_login:/var/lib/mysql
     command:
       [
         "mysqld",
         "--default-authentication-plugin=mysql_native_password",
         "--character-set-server=utf8mb4",
-        "--collation-server=utf8mb4_0900_as_cs",
+        "--collation-server=utf8mb4_unicode_ci",
       ]
     networks:
       - default
     restart: always
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin:latest
+    environment:
+      PMA_HOSTS: login, shop
+    links:
+      - db_login:login
+      - db_shop:shop
+    ports:
+      - 8081:80
 
 volumes:
   persistent_shop:
