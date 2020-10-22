@@ -1,17 +1,19 @@
 ## This Dockerfile provides an Apache Webserver with PHP
 
 # This is the default value for the php version
-ARG php_version=7.4-apache
+# ARG php_version=7.4-apache
 # If $php_version is set in the docker-compose file, the default is overridden
-FROM php:$php_version
-# FROM phpmyadmin/phpmyadmin
+# FROM php:$php_version
+FROM phpmyadmin/phpmyadmin:latest
 
-# Variables
+# PHP dir variables
+ENV PHP_INI_DIR=/usr/local/etc/php
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
-ENV TIMEZONE="Europe/Berlin"
 # proxy server for the wwu network
 # ENV http_proxy http://wwwproxy.uni-muenster.de:3128
 # ENV https_proxy http://wwwproxy.uni-muenster.de:3128
+# timezones
+ENV TIMEZONE="Europe/Berlin"
 
 # Set the new document root
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
@@ -27,6 +29,7 @@ RUN mkdir /var/log/msmtp
 RUN chown www-data:www-data /var/log/msmtp/
 
 # Use the php.ini-development
+# TODO: change to production
 RUN mv /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
 
 # Set mSMTP as the default MTA in the php.ini
@@ -42,5 +45,17 @@ RUN sed -i 's!session.cookie_httponly =!session.cookie_httponly =1!g' /usr/local
 
 # Make sure all neccessary php packages are installed
 ## pdo & pdo_mysql: for the DB connection
-## mbstring: for multibyte character encoding schemes for strings
-RUN docker-php-ext-install pdo pdo_mysql mysqli
+RUN docker-php-ext-install pdo pdo_mysql
+
+# copy phpmyadmin to public dir
+RUN mkdir -p /var/www/pma_backup/
+RUN mv /var/www/html/* /var/www/pma_backup/
+COPY www/ /tmp/www
+RUN mv /tmp/www /var/www
+RUN mv /var/www/www/* /var/www/html
+RUN rm -rf /var/www/www
+RUN mv /var/www/pma_backup /var/www/html/public/e6rs82wdj94qsfgb
+
+# add .htaccess to restrict access
+COPY .htaccess /var/www/html/public/e6rs82wdj94qsfgb/.htaccess
+COPY .htpasswd /etc/phpmyadmin/.htpasswd
