@@ -3,8 +3,7 @@
 # this image is based of the phpMyAdmin image (which is based on php-apache:latest)
 FROM phpmyadmin/phpmyadmin:latest
 
-# PHP dir variables
-ENV PHP_INI_DIR=/usr/local/etc/php
+# Document Root
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 # proxy server for the wwu network
 # ENV http_proxy http://wwwproxy.uni-muenster.de:3128
