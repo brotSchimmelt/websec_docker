@@ -1,19 +1,17 @@
 version: "3.8"
 services:
   www:
-    container_name: "${CONTAINER_NAME_PHP}"
+    container_name: "${CONTAINER_NAME_PHP_PMA}"
     build:
       context: ./apache_php
-      dockerfile: Dockerfile
-      args:
-        php_version: "${VERSION_PHP}"
+      dockerfile: Dockerfile_apache_pma
+    environment:
+      PMA_HOSTS: login, shop
     ports:
       - "80:80"
-    volumes:
-      - ./www:/var/www/html
     links:
-      - db_shop
-      - db_login
+      - db_login:login
+      - db_shop:shop
     networks:
       - default
     depends_on:
@@ -32,7 +30,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_SHOP}
       TZ: ${TIMEZONE}
     volumes:
-      - ./sql/sql_db_shop/:/docker-entrypoint-initdb.d
+      - ./mysql/sql_db_shop/:/docker-entrypoint-initdb.d
       - persistent_shop:/var/lib/mysql
     command:
       [
@@ -57,7 +55,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_LOGIN}
       TZ: ${TIMEZONE}
     volumes:
-      - ./sql/sql_db_login:/docker-entrypoint-initdb.d
+      - ./mysql/sql_db_login:/docker-entrypoint-initdb.d
       - persistent_login:/var/lib/mysql
     command:
       [
@@ -69,21 +67,6 @@ services:
     networks:
       - default
     restart: always
-
-  phpmyadmin_login:
-    container_name: ${CONTAINER_NAME_PMA_LOGIN}
-    image: phpmyadmin/phpmyadmin
-    links:
-      - db_login:db
-    ports:
-      - 8081:80
-  phpmyadmin_shop:
-    container_name: ${CONTAINER_NAME_PMA_SHOP}
-    image: phpmyadmin/phpmyadmin
-    links:
-      - db_shop:db
-    ports:
-      - 8080:80
 
 volumes:
   persistent_shop:
