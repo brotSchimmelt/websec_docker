@@ -70,7 +70,6 @@ services:
       - default
     restart: always
 
-  # for local testing
   phpmyadmin:
     container_name: phpmyadmin
     image: phpmyadmin/phpmyadmin:latest
@@ -80,7 +79,7 @@ services:
       - db_login:login
       - db_shop:shop
     ports:
-      - 8080:80
+      - 8082:80
 
 volumes:
   persistent_shop:
