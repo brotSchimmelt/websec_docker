@@ -48,3 +48,12 @@ CREATE TABLE `csrf_posts` (
   `referrer` varchar(255) COLLATE utf8mb4_0900_as_cs NOT NULL COMMENT 'source of post',
   `timestamp` datetime NOT NULL COMMENT 'timestamp of creation'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_as_cs COMMENT='posts for the csrf challenge';
+
+
+CREATE TABLE `challenge_solutions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'auto incrementing id of each solution',
+  `user_name` varchar(64) COLLATE utf8mb4_0900_as_cs NOT NULL COMMENT 'username',
+  `reflective_xss` varchar(255) COLLATE utf8mb4_0900_as_cs NOT NULL DEFAULT '-' COMMENT 'reflective xss challenge',
+  `stored_xss` varchar(255) COLLATE utf8mb4_0900_as_cs NOT NULL DEFAULT '-' COMMENT 'stored xss challenge',
+  `sqli` varchar(255) COLLATE utf8mb4_0900_as_cs NOT NULL DEFAULT '-' COMMENT 'sql injection challenge'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_as_cs COMMENT='solutions for the challenges';
