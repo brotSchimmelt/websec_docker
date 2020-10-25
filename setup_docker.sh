@@ -116,7 +116,9 @@ while ( ! $done_root ); do
     fi
 done
 
-printf "\n\nDo you want to use phpMyAdmin? [Y/n] "
+printf "\n\nDo you want to use phpMyAdmin in an extra container (recommended)? 
+Or do you want to integrate it in the apache container? This is useful for a 
+scenario with no open ports. So, extra container or not? [Y/n] "
 read answer
 
 if [ -z $answer ]; then
@@ -124,14 +126,25 @@ if [ -z $answer ]; then
 fi
 
 if [ $answer == 'n' ] || [ $answer == 'N' ]; then
-    printf "\nOK, phpMyAdmin will ${orange}not${noColor} be configured."
-else
     printf "\nChanging docker-compose settings ..."
     cp docker-compose.yml docker-compose_php.backup
     cp docker-compose_pma.yml docker-compose_pma.backup
     mv docker-compose.yml docker-compose_php.yml
     mv docker-compose_pma.yml docker-compose.yml
     sleep 2 # wait to ensure the file operations are done
+
+    printf "\nChanging links to phpMyAdmin ..."
+    sed -i "s!':8082'!/pma/!g" ./apache_php/www/src/includes/admin_sidebar.php
+    
+    printf "\nphpMyAdmin will now start in the same container as apache"
+    printf "\n${green}done${noColor}"
+else
+    printf "\nOn what port do you want phpMyAdmin to listen? "
+    read answerPort
+
+    sed -i "s!'8082'!$answerPort!g" ./apache_php/www/src/includes/admin_sidebar.php
+    sed -i "s!'8082'!$answerPort!g" ./docker-compose.yml
+    printf "\nOK, phpMyAdmin listens now on port ${orange} $answerPort ${noColor}"
     printf "\n${green}done${noColor}"
 fi
 
