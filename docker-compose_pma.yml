@@ -5,6 +5,8 @@ services:
     build:
       context: ./apache_php
       dockerfile: Dockerfile_pma
+      args:
+        mail_pwd: "${MAIL_PWD}"
     environment:
       PMA_HOSTS: login, shop
     ports:
