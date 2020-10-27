@@ -127,11 +127,11 @@ printf "\n\nNow enter the password for the WebSec mail account: "
 read -s mail_pwd
 
 # set up phpMyAdmin installation
-printf "\n\n${orange}phpMyAdmin${noColor} You have 2 options to install " \
-"it:\nYou can either install it in an extra container or integrate it in " \
-"the apache container. By integrating it, you do not need an open port to " \
-"access it. (But it is still ${orange}recommended${noColor} to install it " \
-"separatley though.)\nSo, do you want to use phpMyAdmin in an extra container " \
+printf "\n\n${orange}phpMyAdmin${noColor} You have 2 options to install "\
+"it:\nYou can either install it in an extra container or integrate it in "\
+"the apache container. By integrating it, you do not need an open port to "\
+"access it. (But it is still ${orange}recommended${noColor} to install it "\
+"separatley though.)\nSo, do you want to use phpMyAdmin in an extra container "\
 "(open port available)? [Y/n]"
 read answer
 
