@@ -10,20 +10,15 @@
 #   Backup any old configuration files                                         #    
 #   Remove source control configurations and test files                        #
 #   Set up MySQL user, password and root password                              #
+#   Set up phpMyAdmin installation                                             #
 #   Create new '.env' file                                                     #
 #   Set up the server URI                                                      #
 #   Write new settings to php configuration files                              #
 #   Check (and if necessary install) docker and docker-compose                 #
 #   Set permissions for apache user (www-data)                                 #
-#   Set up Uni Muenster proxies                                                #
+#   Set up Uni Muenster proxy                                                  #
 #   Build the custom apache docker image with new configurations               #
 ################################################################################
-
-# check if the script is run with 'sudo'
-if [[ $EUID -ne 0 ]];
-then
-    exec sudo /bin/bash "$0" "$@"
-fi
 
 # default values for the env variables
 php_version="7.4-apache"
@@ -37,8 +32,14 @@ orange="\033[0;33m"
 green="\033[0;32m"
 noColor="\033[0m"
 
-printf "\nThis script will set up the .env file for docker and build the "\
-"container images.\n\n"
+# run script with 'sudo'  
+if [[ $EUID -ne 0 ]];
+then
+    exec sudo /bin/bash "$0" "$@"
+fi
+
+printf "\nThis script will set up the .env file for docker-compose and build "\
+"the container images.\n\n"
 
 printf "Continue? [Y/n] "
 read answer
@@ -58,12 +59,14 @@ printf "${orange}For the two DBs ('shop' & 'login') we will configure the "\
 printf "${orange}If you wish to change those, you can manually change them "\
 "in the .env file after this script is done.${noColor}\n\n\n"
 
+# backup any old configuration files 
 printf "Backing up any old configuration files ..."
 mv .env env.backup 2> /dev/null
 mv example.env env.example 2> /dev/null
 rm *.env 2> /dev/null
 printf "\n${green}done${noColor}\n\n"
 
+# remove source control configurations
 printf "Removing any source control configurations ..."
 rm -r .git 2> /dev/null
 rm .gitignore 2> /dev/null
@@ -71,6 +74,7 @@ rm -r ./apache_php/www/.git 2> /dev/null
 rm ./apache_php/www/.gitignore 2> /dev/null
 printf "\n${green}done${noColor}\n\n"
 
+# remove test files  
 printf "Removing test files ..."
 rm -r ./apache_php/www/tests 2> /dev/null
 rm -r ./apache_php/www/vendor 2> /dev/null
@@ -79,10 +83,11 @@ rm ./apache_php/www/composer.json 2> /dev/null
 rm ./apache_php/www/phpunit.xml 2> /dev/null
 printf "\n${green}done${noColor}\n\n"
 
+# set up MySQL user
 printf "Enter a username for the MySQL DBs: "
 read user
 
-# add mysql user password
+# add MySQL user password
 done_pwd=false
 while ( ! $done_pwd ); do
 
@@ -99,7 +104,7 @@ while ( ! $done_pwd ); do
     fi
 done
 
-# add mysql root password
+# add MySQL root password
 done_root=false
 while ( ! $done_root ); do
 
@@ -116,9 +121,12 @@ while ( ! $done_root ); do
     fi
 done
 
-printf "\n\nDo you want to use phpMyAdmin in an extra container (recommended)? 
-Or do you want to integrate it in the apache container? This is useful for a 
-scenario with no open ports. So, extra container or not? [Y/n] "
+# set up phpMyAdmin installation
+printf "\n\nYou have 2 options to install phpMyAdmin:\nYou can either install 
+it in an extra container or integrate it in the apache container. By 
+integrating it, you do not need an open port to access it. (But it is still 
+${orange}recommended${noColor} to install it separatley though.)\nSo, do you 
+want to use phpMyAdmin in an extra container (open port available)? [Y/n]"
 read answer
 
 if [ -z $answer ]; then
@@ -126,7 +134,7 @@ if [ -z $answer ]; then
 fi
 
 if [ $answer == 'n' ] || [ $answer == 'N' ]; then
-    printf "\nChanging docker-compose settings ..."
+    printf "\nChanging docker-compose settings to use apache container ..."
     cp docker-compose.yml docker-compose_php.backup
     cp docker-compose_pma.yml docker-compose_pma.backup
     mv docker-compose.yml docker-compose_php.yml
@@ -136,10 +144,10 @@ if [ $answer == 'n' ] || [ $answer == 'N' ]; then
     printf "\nChanging links to phpMyAdmin ..."
     sed -i "s!':8082'!/pma/!g" ./apache_php/www/src/includes/admin_sidebar.php
     
-    printf "\nphpMyAdmin will now start in the same container as apache"
+    printf "\nphpMyAdmin will now start in the same container as apache!"
     printf "\n${green}done${noColor}"
 else
-    printf "\nOn what port do you want phpMyAdmin to listen? "
+    printf "\nOK, on what port do you want phpMyAdmin to listen? "
     read answerPort
 
     sed -i "s!'8082'!$answerPort!g" ./apache_php/www/src/includes/admin_sidebar.php
@@ -150,7 +158,7 @@ fi
 
 printf "\n\nWriting .env file ..."
 
-# content of the configuration file (.env)
+# create new '.env' file
 env_content="VERSION_PHP=$php_version
 VERSION_MYSQL=$mysql_version
 
@@ -169,13 +177,15 @@ MYSQL_USER_LOGIN=$user
 MYSQL_PASSWORD_LOGIN=$pwd
 MYSQL_ROOT_PASSWORD_LOGIN=$root_pwd
 
-TIMEZONE=$timezone"
+TIMEZONE=$timezone
+
+MAIL_PWD=$mail_pwd"
 
 echo "$env_content" > .env
 sleep 2 # wait to ensure the file operations are done
 printf "\n${green}done${noColor}\n\n"
 
-# add server URI
+# set up the server URI
 done_uri=false
 while ( ! $done_uri ); do
 
@@ -196,6 +206,7 @@ while ( ! $done_uri ); do
     fi
 done
 
+# write new settings to php configuration files
 printf "\nWriting to php config files ..."
 cp ./apache_php/www/config/config.php ./apache_php/www/config/config.backup
 cp ./apache_php/www/config/db_login.php ./apache_php/www/config/db_login.backup
@@ -223,6 +234,8 @@ sed -i "s!'DB_PWD_SHOP', '.*'!'DB_PWD_SHOP', '$pwd'!g" \
 
 sleep 2 # wait to ensure the file operations are done
 printf "\n${green}done${noColor}\n\n"
+
+## Check (and if necessary install) docker and docker-compose 
 
 # check if docker is installed
 docker --version &> /dev/null
@@ -273,10 +286,12 @@ if [ $? -gt 0 ]; then
     fi
 fi
 
+# set permissions for apache user (www-data) 
 printf "Setting permission for www-data ..."
 chown www-data ./apache_php/www/data &> /dev/null
 printf "\n${green}done${noColor}\n\n"
 
+# set up Uni Muenster proxy
 printf "Do you want to configure docker to use the Uni Muenster proxy? [y/N] "
 read answer
 
@@ -319,7 +334,7 @@ else
     printf "\n${green}OK, proxy settings remain unchanged!${noColor}\n\n"
 fi
 
-printf "building images (this might take up to 5 mins) ..."
+printf "building images (get yourself a coffee) ... "
 docker-compose build -q
 printf "\n${green}done${noColor}\n\n"
 
