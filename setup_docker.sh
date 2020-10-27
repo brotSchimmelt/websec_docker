@@ -10,6 +10,7 @@
 #   Backup any old configuration files                                         #    
 #   Remove source control configurations and test files                        #
 #   Set up MySQL user, password and root password                              #
+#   Set up mail account password                                               #
 #   Set up phpMyAdmin installation                                             #
 #   Create new '.env' file                                                     #
 #   Set up the server URI                                                      #
