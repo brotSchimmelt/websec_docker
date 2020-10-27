@@ -30,8 +30,7 @@ RUN mkdir /var/log/msmtp
 RUN chown www-data:www-data /var/log/msmtp/
 
 # Use the php.ini-development
-# TODO: change to production
-RUN mv /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
+RUN mv /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
 
 # Set mSMTP as the default MTA in the php.ini
 RUN sed -i "s!;sendmail_path =!sendmail_path = /usr/bin/msmtp -t!g" /usr/local/etc/php/php.ini
