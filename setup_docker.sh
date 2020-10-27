@@ -121,6 +121,10 @@ while ( ! $done_root ); do
     fi
 done
 
+# set up smtp client
+printf "Enter the password for the WebSec mail account: "
+read -s mail_pwd
+
 # set up phpMyAdmin installation
 printf "\n\nYou have 2 options to install phpMyAdmin:\nYou can either install 
 it in an extra container or integrate it in the apache container. By 
