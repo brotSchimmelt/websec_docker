@@ -123,15 +123,16 @@ while ( ! $done_root ); do
 done
 
 # set up smtp client
-printf "Enter the password for the WebSec mail account: "
+printf "\n\nNow enter the password for the WebSec mail account: "
 read -s mail_pwd
 
 # set up phpMyAdmin installation
-printf "\n\nYou have 2 options to install phpMyAdmin:\nYou can either install 
-it in an extra container or integrate it in the apache container. By 
-integrating it, you do not need an open port to access it. (But it is still 
-${orange}recommended${noColor} to install it separatley though.)\nSo, do you 
-want to use phpMyAdmin in an extra container (open port available)? [Y/n]"
+printf "\n\n${orange}phpMyAdmin${noColor} You have 2 options to install " \
+"it:\nYou can either install it in an extra container or integrate it in " \
+"the apache container. By integrating it, you do not need an open port to " \
+"access it. (But it is still ${orange}recommended${noColor} to install it " \
+"separatley though.)\nSo, do you want to use phpMyAdmin in an extra container " \
+"(open port available)? [Y/n]"
 read answer
 
 if [ -z $answer ]; then
