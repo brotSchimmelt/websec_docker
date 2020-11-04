@@ -123,7 +123,7 @@ while ( ! $done_root ); do
 done
 
 # set up smtp client
-printf "\n\nNow enter the password for the WebSec mail account: "
+printf "\n\nNow enter the password for ${orange}websec@wi.uni-muenster.de${noColor}: "
 read -s mail_pwd
 
 # set up phpMyAdmin installation
