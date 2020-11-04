@@ -9,7 +9,7 @@ services:
         php_version: "${VERSION_PHP}"
         mail_pwd: "${MAIL_PWD}"
     ports:
-      - "80:80"
+      - "${PORT_APACHE}:80"
     volumes:
       - ./apache_php/www:/var/www/html
     links:
@@ -25,7 +25,7 @@ services:
     image: mysql:${VERSION_MYSQL}
     container_name: ${CONTAINER_NAME_MYSQL_SHOP}
     ports:
-      - "3306:3306"
+      - "${PORT_MYSQL_SHOP}:3306"
     environment:
       MYSQL_DATABASE: ${MYSQL_DB_SHOP}
       MYSQL_USER: ${MYSQL_USER_SHOP}
@@ -50,7 +50,7 @@ services:
     image: mysql:${VERSION_MYSQL}
     container_name: ${CONTAINER_NAME_MYSQL_LOGIN}
     ports:
-      - "3307:3306"
+      - "${PORT_MYSQL_LOGIN}:3306"
     environment:
       MYSQL_DATABASE: ${MYSQL_DB_LOGIN}
       MYSQL_USER: ${MYSQL_USER_LOGIN}
@@ -72,7 +72,7 @@ services:
     restart: always
 
   phpmyadmin:
-    container_name: phpmyadmin
+    container_name: ${CONTAINER_NAME_PMA}
     image: phpmyadmin/phpmyadmin:latest
     environment:
       PMA_HOSTS: login, shop
@@ -80,7 +80,7 @@ services:
       - db_login:login
       - db_shop:shop
     ports:
-      - 8082:80
+      - ${PORT_PMA}:80
 
 volumes:
   persistent_shop:
