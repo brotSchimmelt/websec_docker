@@ -446,7 +446,7 @@ else
     printf "\n${green}OK, proxy settings remain unchanged!${noColor}\n\n"
 fi
 
-printf "building images (get yourself a coffee) ... "
+printf "building images (get yourself some coffee) ... "
 docker-compose build -q
 printf "\n${green}done${noColor}\n\n"
 
