@@ -26,6 +26,10 @@ php_version="7.4-apache"
 mysql_version="8.0"
 timezone="Europe/Berlin"
 proxy="http://wwwproxy.uni-muenster.de:3128"
+port_apache="80"
+port_mysql_shop="3306"
+port_mysql_login="3307"
+port_pma="8082"
 
 # font colors
 red="\031[0;32m"
@@ -407,7 +411,7 @@ if [ -z $answer ]; then
 fi
 
 if [ $answer == 'y' ] || [ $answer == 'Y' ] || [ $answer == 'yes' ]; then
-    printf "\nsetting ${orange} wwwproxy.uni-muenster.de:3128 ${noColor} as "
+    printf "\nsetting ${orange}wwwproxy.uni-muenster.de:3128${noColor} as "
     printf "HTTP and HTTPS proxy ...\n\n"
 
     printf "creating a systemd drop-in directory for the docker service ..."
