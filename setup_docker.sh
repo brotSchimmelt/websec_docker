@@ -82,10 +82,10 @@ rm ./apache_php/www/composer.json 2> /dev/null
 rm ./apache_php/www/phpunit.xml 2> /dev/null
 printf "\n${green}done${noColor}\n\n"
 
-printf "\n\n${orange}NOTE:${noColor} For the two DBs ('shop' & 'login') we "\
+printf "\n${orange}IMPORTANT${noColor} For the two DBs ('shop' & 'login') we "\
 "will configure the same user and password.\n"
 printf "If you wish to change those, you can do so manually in the "\
-".env file in this directory after this script is done.\n\n\n"
+".env file in this directory after the script is done.\n\n\n"
 
 printf "OK, now let's start by configuring the MySQL DBs!\n\n"
 
@@ -127,7 +127,7 @@ while ( ! $done_root ); do
     fi
 done
 
-printf "\n\nNext, we set up the SMTP client for the hacking platform!"
+printf "\n\n\nNext, we set up the SMTP client for the hacking platform!"
 
 # get mail address and user
 done_mail_address=false
@@ -136,12 +136,12 @@ while ( ! $done_mail_address ); do
     printf "\n\nMail address: "
     read mail_address
 
-    printf "\nUser name (don't forget the 'wiwi\\'): "
+    printf "User name (don't forget the 'wiwi\'): "
     read mail_user
 
     # confirm mail address and user
-    printf "\nAre ${orange}$mail_address${noColor} and "\
-    "${orange}$mail_user${noColor} correct? [Y/n]"
+    printf "\nAre ${orange}$mail_address${noColor} and "
+    printf "${orange}$mail_user${noColor} correct? [Y/n]"
     read answer
 
     if [ -z $answer ]; then
@@ -157,15 +157,15 @@ done
 done_mail_server=false
 while ( ! $done_mail_server ); do
 
-    printf "\n\nSMTP server: "
+    printf "\nSMTP server: "
     read mail_server
 
-    printf "\nSMTP port: "
+    printf "SMTP port: "
     read mail_port
 
     # confirm mail server and port
-    printf "\nIs ${orange}$mail_server${noColor} on port "\
-    "${orange}$mail_port${noColor} correct? [Y/n]"
+    printf "\nIs ${orange}$mail_server${noColor} on port "
+    printf "${orange}$mail_port${noColor} correct? [Y/n]"
     read answer
 
     if [ -z $answer ]; then
@@ -178,12 +178,12 @@ while ( ! $done_mail_server ); do
 done
 
 # get mail password
-printf "\n\nEnter the password for ${orange}$mail_address${noColor}: "
+printf "\nPassword for ${orange}$mail_address${noColor}: "
 read -s mail_password
 printf "\n${green}done${noColor}\n\n"
 
 # set up phpMyAdmin installation
-printf "Now, we configure phpMyAdmin!"
+printf "\nNow, we configure phpMyAdmin!"
 
 printf "\n\n${orange}IMPORTANT${noColor} You have 2 options to install "\
 "phpMyAdmin:\nYou can either install it in an extra container or integrate it "\
