@@ -50,25 +50,19 @@ answer='Y'
 fi
 
 if [ $answer == 'n' ] || [ $answer == 'N' ]; then
-printf "\n${green}OK, nothing has been changed!${noColor}\n\n"
+printf "\n${green}OK${noColor}, nothing has been changed!\n\n"
 exit 0
 fi
 
-printf "\n\n${orange}##### NOTE #####${noColor}\n"
-printf "${orange}For the two DBs ('shop' & 'login') we will configure the "\
-"same user and password.${noColor}\n"
-printf "${orange}If you wish to change those, you can manually change them "\
-"in the .env file after this script is done.${noColor}\n\n\n"
-
 # backup any old configuration files 
-printf "Backing up any old configuration files ..."
+printf "\n\nBacking up old configuration files ..."
 mv .env env.backup 2> /dev/null
 mv example.env env.example 2> /dev/null
 rm *.env 2> /dev/null
 printf "\n${green}done${noColor}\n\n"
 
 # remove source control configurations
-printf "Removing any source control configurations ..."
+printf "Removing source control configurations ..."
 rm -r .git 2> /dev/null
 rm .gitignore 2> /dev/null
 rm -r ./apache_php/www/.git 2> /dev/null
@@ -83,6 +77,13 @@ rm ./apache_php/www/composer.lock 2> /dev/null
 rm ./apache_php/www/composer.json 2> /dev/null
 rm ./apache_php/www/phpunit.xml 2> /dev/null
 printf "\n${green}done${noColor}\n\n"
+
+printf "\n\n${orange}NOTE:${noColor} For the two DBs ('shop' & 'login') we "\
+"will configure the same user and password.\n"
+printf "If you wish to change those, you can do so manually in the "\
+".env file in this directory after this script is done.\n\n\n"
+
+printf "OK, now let's start by configuring the MySQL DBs!\n\n"
 
 # set up MySQL user
 printf "Enter a username for the MySQL DBs: "
@@ -122,14 +123,67 @@ while ( ! $done_root ); do
     fi
 done
 
-# set up smtp client
-printf "\n\nNow enter the password for ${orange}websec@wi.uni-muenster.de${noColor}: "
-read -s mail_pwd
+printf "\n\nNext, we set up the SMTP client for the hacking platform!"
+
+# get mail address and user
+done_mail_address=false
+while ( ! $done_mail_address ); do
+
+    printf "\n\nMail address: "
+    read mail_address
+
+    printf "\nUser name (don't forget the 'wiwi\\'): "
+    read mail_user
+
+    # confirm mail address and user
+    printf "\nAre ${orange}$mail_address${noColor} and "\
+    "${orange}$mail_user${noColor} correct? [Y/n]"
+    read answer
+
+    if [ -z $answer ]; then
+        answer='Y'
+    fi
+
+    if [ $answer == 'y' ] || [ $answer == 'Y' ]; then
+        done_mail_address=true
+    fi
+done
+
+# get mail server details
+done_mail_server=false
+while ( ! $done_mail_server ); do
+
+    printf "\n\nSMTP server: "
+    read mail_server
+
+    printf "\nSMTP port: "
+    read mail_port
+
+    # confirm mail server and port
+    printf "\nIs ${orange}$mail_server${noColor} on port "\
+    "${orange}$mail_port${noColor} correct? [Y/n]"
+    read answer
+
+    if [ -z $answer ]; then
+        answer='Y'
+    fi
+
+    if [ $answer == 'y' ] || [ $answer == 'Y' ]; then
+        done_mail_server=true
+    fi
+done
+
+# get mail password
+printf "\n\nEnter the password for ${orange}$mail_address${noColor}: "
+read -s mail_password
+printf "\n${green}done${noColor}\n\n"
 
 # set up phpMyAdmin installation
-printf "\n\n${orange}phpMyAdmin${noColor} You have 2 options to install "\
-"it:\nYou can either install it in an extra container or integrate it in "\
-"the apache container. By integrating it, you do not need an open port to "\
+printf "Now, we configure phpMyAdmin!"
+
+printf "\n\n${orange}IMPORTANT${noColor} You have 2 options to install "\
+"phpMyAdmin:\nYou can either install it in an extra container or integrate it "\
+"in the apache container. By integrating it, you do not need an open port to "\
 "access it. (But it is still ${orange}recommended${noColor} to install it "\
 "separatley though.)\nSo, do you want to use phpMyAdmin in an extra container "\
 "(open port available)? [Y/n]"
@@ -151,15 +205,52 @@ if [ $answer == 'n' ] || [ $answer == 'N' ]; then
     sed -i "s!':8082'!/pma/!g" ./apache_php/www/src/includes/admin_sidebar.php
     
     printf "\nphpMyAdmin will now start in the same container as apache!"
-    printf "\n${green}done${noColor}"
+    printf "\n${green}done${noColor}\n\n"
 else
     printf "\nOK, on what port do you want phpMyAdmin to listen? "
-    read answerPort
+    read port_pma
 
-    sed -i "s!'8082'!$answerPort!g" ./apache_php/www/src/includes/admin_sidebar.php
-    sed -i "s!'8082'!$answerPort!g" ./docker-compose.yml
-    printf "\nOK, phpMyAdmin listens now on port ${orange} $answerPort ${noColor}"
-    printf "\n${green}done${noColor}"
+    sed -i "s!'8082'!$port_pma!g" ./apache_php/www/src/includes/admin_sidebar.php
+    sed -i "s!'8082'!$port_pma!g" ./docker-compose.yml
+    printf "\nOK, phpMyAdmin listens now on port ${orange}$port_pma${noColor}"
+    printf "\n${green}done${noColor}\n\n"
+fi
+
+printf "Do you want to use the default ports for the apache and MySQL "\
+"containers (80, 3306/3307)? [Y/n]"
+read answer
+
+if [ -z $answer ]; then
+    answer='Y'
+fi
+
+# set custom ports
+if [ $answer == 'n' ] || [ $answer == 'N' ]; then
+
+    done_docker_ports=false
+    while ( ! $done_docker_ports ); do
+
+        printf "\n\nOK, which port should apache use: "
+        read port_apache
+
+        printf "\nMySQL LOGIN port: "
+        read port_mysql_login
+
+        printf "\nMySQL SHOP port: "
+        read port_mysql_shop
+
+        printf "\n\nAre apache:$port_apache, login:$port_mysql_login and "\
+        "shop:$port_mysql_shop correct? [Y/n]"
+        read answer
+
+        if [ -z $answer ]; then
+            answer='Y'
+        fi
+
+        if [ $answer == 'y' ] || [ $answer == 'Y' ]; then
+            done_docker_ports=true
+        fi
+    done
 fi
 
 printf "\n\nWriting .env file ..."
@@ -168,10 +259,16 @@ printf "\n\nWriting .env file ..."
 env_content="VERSION_PHP=$php_version
 VERSION_MYSQL=$mysql_version
 
-CONTAINER_NAME_PHP=php_apache
-CONTAINER_NAME_PHP_PMA=php_apache_pma
-CONTAINER_NAME_MYSQL_SHOP=db_shop
-CONTAINER_NAME_MYSQL_LOGIN=db_login
+CONTAINER_NAME_PHP=php_apache_$port_apache
+CONTAINER_NAME_PHP_PMA=php_apache_pma_$port_apache
+CONTAINER_NAME_MYSQL_SHOP=db_shop_$port_mysql_shop
+CONTAINER_NAME_MYSQL_LOGIN=db_login_$port_mysql_login
+CONTAINER_NAME_PMA=phpmyadmin_$port_pma
+
+PORT_APACHE=$port_apache
+PORT_MYSQL_SHOP=$port_mysql_shop
+PORT_MYSQL_LOGIN=$port_mysql_login
+PORT_PMA=$port_pma
 
 MYSQL_DB_SHOP=shop
 MYSQL_USER_SHOP=$user
@@ -185,7 +282,11 @@ MYSQL_ROOT_PASSWORD_LOGIN=$root_pwd
 
 TIMEZONE=$timezone
 
-MAIL_PWD=$mail_pwd"
+MAIL_ADD=$mail_address
+MAIL_USR=$mail_user
+MAIL_SER=$mail_server
+MAIL_POR=$mail_port
+MAIL_PWD=$mail_password"
 
 echo "$env_content" > .env
 sleep 2 # wait to ensure the file operations are done
@@ -198,7 +299,7 @@ while ( ! $done_uri ); do
     printf "Under which URI should this site be accessible? "
     read uri
 
-    printf "Is ${orange} $uri ${noColor} correct? [Y/n] "
+    printf "Is ${orange}$uri${noColor} correct? [Y/n] "
     read answer
 
     if [ -z $answer ]; then

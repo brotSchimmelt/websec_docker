@@ -16,15 +16,27 @@ ENV TIMEZONE="Europe/Berlin"
 RUN sed -ri -e "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" /etc/apache2/sites-available/*.conf
 RUN sed -ri -e "s!/var/www/!${APACHE_DOCUMENT_ROOT}!g" /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# get mail password
+# get mail credentials
 ARG mail_pwd
 ENV MAIL_PWD $mail_pwd
+ARG mail_add
+ENV MAIL_ADD $mail_add
+ARG mail_usr
+ENV MAIL_USR $mail_usr
+ARG mail_ser
+ENV MAIL_SER $mail_ser
+ARG mail_por
+ENV MAIL_POR $mail_por
 
 # Install mSMTP and mbstring (libonig-dev)
 RUN apt-get update && apt-get install msmtp libonig-dev -y 
 # Copy the mSMTP config file
 COPY msmtprc.txt /etc/msmtprc
 RUN sed -i "s!password_placeholder!${MAIL_PWD}!g" /etc/msmtprc
+RUN sed -i "s!address_placeholder!${MAIL_ADD}!g" /etc/msmtprc
+RUN sed -i "s!user_placeholder!${MAIL_USR}!g" /etc/msmtprc
+RUN sed -i "s!server_placeholder!${MAIL_SER}!g" /etc/msmtprc
+RUN sed -i "s!port_placeholder!${MAIL_POR}!g" /etc/msmtprc
 RUN chmod 600 /etc/msmtprc
 RUN chown www-data:www-data /etc/msmtprc
 RUN mkdir /var/log/msmtp

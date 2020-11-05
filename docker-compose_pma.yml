@@ -7,10 +7,14 @@ services:
       dockerfile: Dockerfile_pma
       args:
         mail_pwd: "${MAIL_PWD}"
+        mail_add: "${MAIL_ADD}"
+        mail_usr: "${MAIL_USR}"
+        mail_ser: "${MAIL_SER}"
+        mail_por: "${MAIL_POR}"
     environment:
       PMA_HOSTS: login, shop
     ports:
-      - "80:80"
+      - "${PORT_APACHE}:80"
     links:
       - db_login:login
       - db_shop:shop
@@ -24,7 +28,7 @@ services:
     image: mysql:${VERSION_MYSQL}
     container_name: ${CONTAINER_NAME_MYSQL_SHOP}
     ports:
-      - "3306:3306"
+      - "${PORT_MYSQL_SHOP}:3306"
     environment:
       MYSQL_DATABASE: ${MYSQL_DB_SHOP}
       MYSQL_USER: ${MYSQL_USER_SHOP}
@@ -49,7 +53,7 @@ services:
     image: mysql:${VERSION_MYSQL}
     container_name: ${CONTAINER_NAME_MYSQL_LOGIN}
     ports:
-      - "3307:3306"
+      - "${PORT_MYSQL_LOGIN}:3306"
     environment:
       MYSQL_DATABASE: ${MYSQL_DB_LOGIN}
       MYSQL_USER: ${MYSQL_USER_LOGIN}

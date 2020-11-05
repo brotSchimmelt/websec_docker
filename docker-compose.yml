@@ -8,6 +8,10 @@ services:
       args:
         php_version: "${VERSION_PHP}"
         mail_pwd: "${MAIL_PWD}"
+        mail_add: "${MAIL_ADD}"
+        mail_usr: "${MAIL_USR}"
+        mail_ser: "${MAIL_SER}"
+        mail_por: "${MAIL_POR}"
     ports:
       - "${PORT_APACHE}:80"
     volumes:
