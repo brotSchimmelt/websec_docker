@@ -141,7 +141,7 @@ while ( ! $done_mail_address ); do
 
     # confirm mail address and user
     printf "\nAre ${orange}$mail_address${noColor} and "
-    printf "${orange}$mail_user${noColor} correct? [Y/n]"
+    printf "${orange}$mail_user${noColor} correct? [Y/n] "
     read answer
 
     if [ -z $answer ]; then
@@ -165,7 +165,7 @@ while ( ! $done_mail_server ); do
 
     # confirm mail server and port
     printf "\nIs ${orange}$mail_server${noColor} on port "
-    printf "${orange}$mail_port${noColor} correct? [Y/n]"
+    printf "${orange}$mail_port${noColor} correct? [Y/n] "
     read answer
 
     if [ -z $answer ]; then
@@ -190,7 +190,7 @@ printf "\n\n${orange}IMPORTANT${noColor} You have 2 options to install "\
 "in the apache container. By integrating it, you do not need an open port to "\
 "access it. (But it is still ${orange}recommended${noColor} to install it "\
 "separatley though.)\nSo, do you want to use phpMyAdmin in an extra container "\
-"(open port available)? [Y/n]"
+"(open port available)? [Y/n] "
 read answer
 
 if [ -z $answer ]; then
@@ -221,7 +221,7 @@ else
 fi
 
 printf "Do you want to use the default ports for the apache and MySQL "\
-"containers (80, 3306/3307)? [Y/n]"
+"containers (80, 3306/3307)? [Y/n] "
 read answer
 
 if [ -z $answer ]; then
@@ -243,8 +243,8 @@ if [ $answer == 'n' ] || [ $answer == 'N' ]; then
         printf "\nMySQL SHOP port: "
         read port_mysql_shop
 
-        printf "\n\nAre apache:$port_apache, login:$port_mysql_login and "\
-        "shop:$port_mysql_shop correct? [Y/n]"
+        printf "\n\nAre apache:$port_apache, login:$port_mysql_login and "
+        printf "shop:$port_mysql_shop correct? [Y/n] "
         read answer
 
         if [ -z $answer ]; then
