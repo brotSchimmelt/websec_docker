@@ -121,14 +121,19 @@ $ docker-compose up -d
 **Manual Setup:** *(not recommended)*
 - Copy and rename the ```example.env``` to ```.env``` and set all necessary variables
 <br>
+
 - Set the MySQL credentials from the ```.env``` file and the host URI in the php configuration files under **www/config/** (config.php, db_login.php, db_shop.php)
 <br>
+
 - If phpMyAdmin should run under the **pma/** directory and not via an open port, rename ```Dockerfile_pma``` and ```docker-compose_pma.yml``` to ```Dockerfile``` and ```docker-compose.yml```
 <br>
+
 - Change the link to the phpMyAdmin installation in www/src/includes/admin_sidebar.php
 <br>
+
 - Set the proxy configurations for the WWU network by uncommenting the corresponding lines in the ```Dockerfile```
 <br>
+
 - To enable the use of proxies for docker on your host, run the following lines:
 
 ```shell
