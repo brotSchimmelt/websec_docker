@@ -168,12 +168,17 @@ The ports for the docker containers can be set in the ```.env``` file. The port 
 
 *For example, the first instance could run with the default ports from the ```example.env``` while a second instance uses port 8081 for apache and the ports 3308/3309 for the MySQL container.*
 
-TODO: add example code
 Shortened output from ```$ docker ps```:
-```shell
-
-
-
+```
+PORTS                               NAMES
+0.0.0.0:8081->80/tcp                php_apache_8081
+0.0.0.0:8083->80/tcp                phpmyadmin_8083
+33060/tcp, 0.0.0.0:3308->3306/tcp   db_login_3308
+33060/tcp, 0.0.0.0:3309->3306/tcp   db_shop_3309
+0.0.0.0:80->80/tcp                  php_apache_80
+0.0.0.0:8082->80/tcp                phpmyadmin_8082
+33060/tcp, 0.0.0.0:3307->3306/tcp   db_login_3307
+0.0.0.0:3306->3306/tcp, 33060/tcp   db_shop_3306
 ```
 
 **Note:** Do not simply copy the directory of a running instance to create a new one. Better, use a copy of the original source.
