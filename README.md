@@ -1,10 +1,10 @@
 # WebSec Docker Environment
 
-This is a short summary how to setup the docker environment for the WebSec hacking platform.
+This is a short summary how to setup the Docker environment for the WebSec hacking platform.
 
 ## Install Docker
 
-You will need docker (>= **19.03.13**) and docker-compose (>= **1.25.5**) in order to run this environment. To check if the tools are already installed, you can either run the ```setup_docker.sh``` script or run the following commands manually:
+You will need Docker (>= **19.03.13**) and docker-compose (>= **1.25.5**) in order to run this environment. To check if the tools are already installed, you can either run the ```setup_docker.sh``` script or run the following commands manually:
 
 ```shell
 $ docker --version
@@ -93,6 +93,12 @@ $ docker run hello-world
 $ sudo systemctl enable docker
 ```
 
+6. Install **docker-compose**:
+```shell
+$ sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+$ sudo chmod +x /usr/local/bin/docker-compose
+```
+
 [Original Source and Trouble shooting](https://docs.docker.com/engine/install/linux-postinstall/)
 
 
@@ -111,11 +117,14 @@ $ sudo systemctl stop apache2
 $ ./setup_docker.sh
 ```
 
-2. Start all docker containers with:
+2. Start all Docker containers with:
 
 ```shell
 $ docker-compose up -d
 ```
+*The script will set up the MySQL and mail account credentials as well as the port and proxy configurations. The installation option for phpMyAdmin can also be chosen during the setup process.*
+
+
 <br>
 
 **Manual Setup:** *(not recommended)*
@@ -125,16 +134,16 @@ $ docker-compose up -d
 - Set the MySQL credentials from the ```.env``` file and the host URI in the php configuration files under **www/config/** (config.php, db_login.php, db_shop.php)
 <br>
 
-- If phpMyAdmin should run under the **pma/** directory and not via an open port, rename ```Dockerfile_pma``` and ```docker-compose_pma.yml``` to ```Dockerfile``` and ```docker-compose.yml```
+- If the phpMyAdmin installation should be accessible via the **pma/** directory and not an open port, rename ```Dockerfile_pma``` and ```docker-compose_pma.yml``` to ```Dockerfile``` and ```docker-compose.yml```
 <br>
 
-- Change the link to the phpMyAdmin installation in www/src/includes/admin_sidebar.php
+- Change the link to the phpMyAdmin installation in **www/src/includes/admin_sidebar.php**
 <br>
 
 - Set the proxy configurations for the WWU network by uncommenting the corresponding lines in the ```Dockerfile```
 <br>
 
-- To enable the use of proxies for docker on your host, run the following lines:
+- To enable the use of proxies for Docker on your host, run the following lines:
 
 ```shell
 $ mkdir -p /etc/systemd/system/docker.service.d
@@ -160,11 +169,11 @@ $ systemctl restart docker
 $ sudo chown www-data ./apache_php/www/data &> /dev/null
 ```
 
-## Running Multiple Instances on the Same Host 
+## Running Multiple Instances on The Same Host 
 
 To run multiple instances of the hacking platform on the same host simultaneously, you could simply run the docker-compose command from different directories with individual port configurations and unique names. In this case, every instance has access to its own MySQL databases and **data/** directory.
 
-The ports for the docker containers can be set in the ```.env``` file. The port configuration also changes the container names automatically to avoid name conflicts on the host.
+The ports for the Docker containers can be set in the ```.env``` file. The port configuration also changes the container names automatically to avoid name conflicts on the host.
 
 *For example, the first instance could run with the default ports from the ```example.env``` while a second instance uses port 8081 for apache and the ports 3308/3309 for the MySQL container.*
 
@@ -182,6 +191,19 @@ PORTS                               NAMES
 ```
 
 **Note:** Do not simply copy the directory of a running instance to create a new one. Better, use a copy of the original source.
+
+
+## Stopping The Hacking Platform
+
+You can always stop all containers from the hacking platform directory with docker-compose:
+```shell
+$ docker-compose down
+```
+In this case all user data in the MySQL databases is untouched. If the container are started again, the hacking platform has the exact same state as before.
+
+To delete all persistent Docker volumes for the MySQL databases **permanently**, run the command with the ```-v``` flag. Note, that the files in the **data/** directory are not effected by this command. In order to delete this files as well, you have to remove them manually.
+
+**Note**: After a reboot of the host system, the hacking platform should be stopped and started again to work properly. This has no effect on any user data.
 
 ## Docker-Compose Commands
 
@@ -205,9 +227,9 @@ $ docker-compose build --no-cache
 $ docker-compose down
 ```
 
-- **Stop all containers and delete all volumes** &#9888;&#65039;
+- **Stop all containers and delete all persistent volumes** &#9888;&#65039;
 ```shell
-# delete all user data from the MySQL databases 
+# deletes all user data from the MySQL databases 
 $ docker-compose down -v
 ```
 [Full Documentation](https://docs.docker.com/compose/)
@@ -223,7 +245,7 @@ $ docker ps
 ```shell
 $ docker exec -it <container_name> <command>
 
-# open bash in apache container
+# open bash in php_apache container
 $ docker exec -it php_apache /bin/bash
 ```
 
