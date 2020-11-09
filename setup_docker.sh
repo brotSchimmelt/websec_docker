@@ -137,7 +137,7 @@ while ( ! $done_mail_address ); do
     printf "\n\nMail address: "
     read mail_address
 
-    printf "User name (don't forget the 'wiwi\'): "
+    printf "User name (omit the 'wiwi' and the backslash): "
     read mail_user
 
     # confirm mail address and user

@@ -12,7 +12,7 @@ account        wwu
 host           server_placeholder
 port           port_placeholder
 from           address_placeholder
-user           user_placeholder
+user           wiwi\user_placeholder
 password       password_placeholder
 
 # Set a default account
