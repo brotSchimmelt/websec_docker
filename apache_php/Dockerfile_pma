@@ -1,15 +1,14 @@
-## This Dockerfile provides an Apache Webserver with PHP
+## This Dockerfile provides an Apache Webserver with PHP AND phpMyAdmin
 
-# This is the default value for the php version
-ARG php_version=7.4-apache
-# If $php_version is set in the docker-compose file, the default is overridden
-FROM php:$php_version
+# this image is based of the phpMyAdmin image (which is based on php-apache:latest)
+FROM phpmyadmin/phpmyadmin:latest
+
 # Document Root
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 # proxy server for the wwu network
 # ENV http_proxy http://wwwproxy.uni-muenster.de:3128
 # ENV https_proxy http://wwwproxy.uni-muenster.de:3128
-# timezone
+# timezones
 ENV TIMEZONE="Europe/Berlin"
 
 # Set the new document root
@@ -59,3 +58,17 @@ RUN sed -i "s!session.cookie_httponly =!session.cookie_httponly =1!g" /usr/local
 # Make sure all neccessary php packages are installed
 ## pdo & pdo_mysql: for the DB connection
 RUN docker-php-ext-install pdo pdo_mysql
+
+# copy webserver files and phpMyAdmin to Document Root
+RUN mkdir -p /var/www/pma_backup/
+RUN mv /var/www/html/* /var/www/pma_backup/
+COPY www/ /tmp/www
+RUN mv /tmp/www /var/www
+RUN mv /var/www/www/* /var/www/html
+RUN rm -rf /var/www/www
+RUN chown www-data /var/www/html/data/
+RUN mv /var/www/pma_backup /var/www/html/public/e6rs82wdj94qsfgb
+
+# add .htaccess to restrict access to phpMyAdmin
+COPY .htaccess /var/www/html/public/e6rs82wdj94qsfgb/.htaccess
+COPY .htpasswd /etc/phpmyadmin/.htpasswd

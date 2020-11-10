@@ -7,13 +7,13 @@ tls_trust_file /etc/ssl/certs/ca-certificates.crt
 tls_certcheck  on
 logfile        /var/log/msmtp/msmtp.log
 
-# Gmail
-account        gmail
-host           smtp.gmail.com
-port           587
-from           websec.automailer@gmail.com
-user           websec.automailer
-password       jAcz#H-E43zX*NVdBNd%QmK&
+# WWU
+account        wwu
+host           server_placeholder
+port           port_placeholder
+from           address_placeholder
+user           wiwi\user_placeholder
+password       password_placeholder
 
 # Set a default account
-account default : gmail
+account default : wwu
