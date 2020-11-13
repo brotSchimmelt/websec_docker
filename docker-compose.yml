@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   www:
-    container_name: "${CONTAINER_NAME_PHP}"
+    container_name: "${CONTAINER_NAME_PHP}_${PORT_APACHE}"
     build:
       context: ./apache_php
       dockerfile: Dockerfile
@@ -27,7 +27,7 @@ services:
 
   db_shop:
     image: mysql:${VERSION_MYSQL}
-    container_name: ${CONTAINER_NAME_MYSQL_SHOP}
+    container_name: ${CONTAINER_NAME_MYSQL_SHOP}_${PORT_MYSQL_SHOP}
     ports:
       - "${PORT_MYSQL_SHOP}:3306"
     environment:
@@ -52,7 +52,7 @@ services:
 
   db_login:
     image: mysql:${VERSION_MYSQL}
-    container_name: ${CONTAINER_NAME_MYSQL_LOGIN}
+    container_name: ${CONTAINER_NAME_MYSQL_LOGIN}_${PORT_MYSQL_LOGIN}
     ports:
       - "${PORT_MYSQL_LOGIN}:3306"
     environment:
@@ -76,8 +76,8 @@ services:
     restart: always
 
   phpmyadmin:
-    container_name: ${CONTAINER_NAME_PMA}
     image: phpmyadmin/phpmyadmin:latest
+    container_name: ${CONTAINER_NAME_PMA}_${PORT_PMA}
     environment:
       PMA_HOSTS: login, shop
     links:
