@@ -264,11 +264,11 @@ printf "\n\nWriting .env file ..."
 env_content="VERSION_PHP=$php_version
 VERSION_MYSQL=$mysql_version
 
-CONTAINER_NAME_PHP=php_apache_$port_apache
-CONTAINER_NAME_PHP_PMA=php_apache_pma_$port_apache
-CONTAINER_NAME_MYSQL_SHOP=db_shop_$port_mysql_shop
-CONTAINER_NAME_MYSQL_LOGIN=db_login_$port_mysql_login
-CONTAINER_NAME_PMA=phpmyadmin_$port_pma
+CONTAINER_NAME_PHP=php_apache
+CONTAINER_NAME_PHP_PMA=php_apache_pma
+CONTAINER_NAME_MYSQL_SHOP=db_shop
+CONTAINER_NAME_MYSQL_LOGIN=db_login
+CONTAINER_NAME_PMA=phpmyadmin
 
 PORT_APACHE=$port_apache
 PORT_MYSQL_SHOP=$port_mysql_shop
